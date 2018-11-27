@@ -1,0 +1,11 @@
+{
+  "Logger": {
+    "Enabled": true,
+    "MinLevel": "Trace"
+  },
+  "FileLogWriter": {
+    "Enabled": true,
+    "FilePrefix": "",
+    "OutputDir": "Log"
+  }
+}
