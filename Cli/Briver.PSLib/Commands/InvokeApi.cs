@@ -9,7 +9,7 @@ using Briver.Http;
 
 namespace Briver.Commands
 {
-    [Cmdlet("Invoke", "Api")]
+    [Cmdlet(VerbsLifecycle.Invoke, "Api")]
     public class InvokeApi : Cmdlet, ICommand
     {
         [Parameter(Mandatory = true, Position = 1)]

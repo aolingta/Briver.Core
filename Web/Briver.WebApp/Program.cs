@@ -29,9 +29,9 @@ namespace Briver.WebApp
     {
         protected override void Configure(ConfigurationBuilder config)
         {
-            const string dir = "Config";
-            Directory.CreateDirectory(dir);
+            var dir = Path.Combine(AppContext.BaseDirectory, "Config");
 
+            Directory.CreateDirectory(dir);
             foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
             {
                 config.AddJsonFile(file, false, true);

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Briver.Framework;
 using System.Threading.Tasks;
+using Briver.Framework;
 
 namespace Briver.Runtime
 {
@@ -14,6 +15,12 @@ namespace Briver.Runtime
     /// </summary>
     public static class EventBus
     {
+        /// <summary>
+        /// 事件订阅存根令牌
+        /// </summary>
+        public sealed class SubscriptionToken
+        {
+        }
 
         /// <summary>
         /// 委托的引用
@@ -23,7 +30,7 @@ namespace Briver.Runtime
             /// <summary>
             /// 令牌
             /// </summary>
-            public Guid Token { get; }
+            public SubscriptionToken Token { get; }
 
             /// <summary>
             /// 订阅者的弱引用
@@ -46,7 +53,7 @@ namespace Briver.Runtime
             /// <param name="delegate">事件的处理方法</param>
             public DelegateReference(Delegate @delegate)
             {
-                var token = Guid.NewGuid();
+                var token = new SubscriptionToken();
 
                 this.Token = token;
                 this.Method = @delegate.Method;
@@ -153,13 +160,13 @@ namespace Briver.Runtime
             /// </summary>
             /// <param name="handler">事件处理函数</param>
             /// <returns>返回代表此函数的令牌，后面移除此函数时要用到</returns>
-            Guid Add(object handler);
+            SubscriptionToken Add(object handler);
 
             /// <summary>
             /// 移除事件处理函数
             /// </summary>
             /// <param name="token">代表此函数的主键</param>
-            void Remove(Guid token);
+            void Remove(SubscriptionToken token);
 
             /// <summary>
             /// 引发事件
@@ -175,43 +182,35 @@ namespace Briver.Runtime
         /// <typeparam name="T">事件参数的类型</typeparam>
         private class EventContainer<T> : IEventContainer where T : EventArgs
         {
+            private readonly object @lock = new object();
             /// <summary>
             /// 订阅了此事件的所有函数的委托引用
             /// </summary>
-            private List<DelegateReference> _delegates = new List<DelegateReference>();
+            private DelegateReference[] _delegates = new DelegateReference[0];
 
             public int Count
             {
-                get
-                {
-                    lock (_delegates)
-                    {
-                        return _delegates.Count;
-                    }
-                }
+                get { lock (@lock) { return _delegates.Length; } }
             }
 
-            public Type Type
-            {
-                get { return typeof(T); }
-            }
+            public Type Type => typeof(T);
 
-            public Guid Add(object handler)
+            public SubscriptionToken Add(object handler)
             {
                 var @delegate = new DelegateReference((EventHandler<T>)handler);
-                lock (_delegates)
+                lock (@lock)
                 {
-                    _delegates.Add(@delegate);
+                    _delegates = _delegates.Union(new[] { @delegate }).ToArray();
                 }
                 return @delegate.Token;
             }
 
-            public void Remove(Guid token)
+            public void Remove(SubscriptionToken token)
             {
-                lock (_delegates)
+                lock (@lock)
                 {
-                    _delegates.RemoveAll(it => it.Token == token);
-                    if (_delegates.Count == 0)
+                    _delegates = _delegates.Where(it => it.Token != token).ToArray();
+                    if (_delegates.Length == 0)
                     {
                         _containers.TryRemove(Type, out var container);
                     }
@@ -221,9 +220,9 @@ namespace Briver.Runtime
             public void Raise(object[] arguments)
             {
                 DelegateReference[] array;
-                lock (_delegates)
+                lock (@lock)
                 {
-                    array = _delegates.ToArray();
+                    array = _delegates;
                 }
 
                 foreach (var @delegate in array)
@@ -250,7 +249,7 @@ namespace Briver.Runtime
         /// <summary>
         /// 事件订阅令牌与事件容器的映射
         /// </summary>
-        private static ConcurrentDictionary<Guid, IEventContainer> _subscriptions = new ConcurrentDictionary<Guid, IEventContainer>();
+        private static ConcurrentDictionary<SubscriptionToken, IEventContainer> _subscriptions = new ConcurrentDictionary<SubscriptionToken, IEventContainer>();
 
         /// <summary>
         /// <para>订阅事件</para>
@@ -259,13 +258,17 @@ namespace Briver.Runtime
         /// <typeparam name="T">事件参数类型</typeparam>
         /// <param name="handler">事件处理函数</param>
         /// <returns></returns>
-        public static Guid Subscribe<T>(EventHandler<T> handler) where T : EventArgs
+        public static SubscriptionToken Subscribe<T>(EventHandler<T> handler) where T : EventArgs
         {
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));
             }
-            var container = _containers.GetOrAdd(typeof(T), type => new EventContainer<T>());
+            IEventContainer NewContainer(Type type)
+            {
+                return new EventContainer<T>();
+            }
+            var container = _containers.GetOrAdd(typeof(T), NewContainer);
             var token = container.Add(handler);
             _subscriptions.TryAdd(token, container);
             return token;
@@ -275,7 +278,7 @@ namespace Briver.Runtime
         /// 取消订阅事件
         /// </summary>
         /// <param name="token">在订阅时返回的令牌</param>
-        public static void Unsubscribe(Guid token)
+        public static void Unsubscribe(SubscriptionToken token)
         {
             if (_subscriptions.TryRemove(token, out var container))
             {

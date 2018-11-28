@@ -37,9 +37,11 @@ namespace Briver.Commands
 
             public override Type Parent => typeof(TestCommand);
 
+            private EventBus.SubscriptionToken _token;
+
             public EventCommand()
             {
-                EventBus.Subscribe<TestEventArgs>((o, e) => { });
+                _token = EventBus.Subscribe<TestEventArgs>((o, e) => { });
             }
 
             private CommandOption _times;
@@ -64,6 +66,7 @@ namespace Briver.Commands
                 var message = $"处理{times}次消息，用时{watch.Elapsed.TotalMilliseconds}毫秒";
                 Console.WriteLine(message);
                 Logger.Warn(message);
+                EventBus.Unsubscribe(_token);
                 return 0;
             }
         }

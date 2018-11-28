@@ -7,13 +7,13 @@ using Briver.Aspect;
 using Briver.Framework;
 using Briver.Logging;
 using Briver.Web;
+using Briver.WebApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Briver.WebApp.Models;
 
 namespace Briver.WebApp.Api
 {
-    //[ApiController]
+    [ApiController]
     [Route("api/user")]
     [Route("api/v1/user")]
     public class UserController : Controller
@@ -22,12 +22,11 @@ namespace Briver.WebApp.Api
         public IActionResult List()
         {
             var repository = new UserRepository();
-            DateTime time;
             var count = 10000;
             var watch = Stopwatch.StartNew();
             Parallel.For(0, count, ii =>
             {
-                var ss = repository.Aspect().Load("", out time);
+                var ss = repository.Aspect().Load("", out DateTime time);
             });
             watch.Stop();
             Logger.Info($"执行{count}次动态调用，用时{watch.Elapsed.TotalMilliseconds}毫秒");
@@ -46,7 +45,7 @@ namespace Briver.WebApp.Api
 
     }
 
-    [LogInterception(Priority = 1)]
+    [Log(Priority = 1)]
     public class UserRepository
     {
         public UserModel[] GetUsers()
@@ -59,13 +58,13 @@ namespace Briver.WebApp.Api
         public (bool, string) Load(string source, out DateTime time)
         {
             time = DateTime.Now;
-            return (true, String.Empty);
+            return (true, string.Empty);
         }
 
         public string Conn { get; set; }
     }
 
-    public class LogInterceptionAttribute : InterceptionAttribute
+    public class LogAttribute : InterceptionAttribute
     {
         public override void Intercept(AspectContext context, AspectDelegate proceed)
         {
@@ -75,7 +74,7 @@ namespace Briver.WebApp.Api
     }
 
     [Composition(Priority = 3)]
-    class LogInterception : Interception
+    internal class Log : Interception
     {
         public override void Intercept(AspectContext context, AspectDelegate proceed)
         {

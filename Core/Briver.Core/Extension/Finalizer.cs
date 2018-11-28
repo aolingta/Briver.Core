@@ -8,22 +8,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Briver.Runtime
+namespace System
 {
-    /// <summary>
-    /// 终结器的扩展
-    /// </summary>
-    public static class FinalizerExtension
+    public static partial class ExtensionMethods
     {
-        private class Container
+        private class FinalizationContainer
         {
             private ConcurrentBag<Action> _actions = new ConcurrentBag<Action>();
 
-            public Container()
+            public FinalizationContainer()
             {
             }
 
-            ~Container()
+            ~FinalizationContainer()
             {
                 if (!Environment.HasShutdownStarted)
                 {
@@ -46,11 +43,9 @@ namespace Briver.Runtime
             }
         }
 
+        private static ConditionalWeakTable<object, FinalizationContainer> _finalizationContainers = new ConditionalWeakTable<object, FinalizationContainer>();
 
-
-        private static ConditionalWeakTable<object, Container> _table = new ConditionalWeakTable<object, Container>();
-
-        private static Container CreateContainer(object item) => new Container();
+        private static FinalizationContainer CreateFinalizationContainer(object item) => new FinalizationContainer();
 
         /// <summary>
         /// 注册对象被垃圾回收时的回调方法
@@ -61,7 +56,7 @@ namespace Briver.Runtime
         {
             if (@this != null && callback != null)
             {
-                _table.GetValue(@this, CreateContainer).AddCallback(callback);
+                _finalizationContainers.GetValue(@this, CreateFinalizationContainer).AddCallback(callback);
             }
         }
     }

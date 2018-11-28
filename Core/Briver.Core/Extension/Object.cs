@@ -5,10 +5,7 @@ using Briver.Framework;
 
 namespace System
 {
-    /// <summary>
-    /// 对象的扩展方法
-    /// </summary>
-    public static partial class ObjectExtension
+    public static partial class ExtensionMethods
     {
         /// <summary>
         /// 判断当前对象是否指定的类型

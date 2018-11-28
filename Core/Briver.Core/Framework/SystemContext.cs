@@ -18,7 +18,7 @@ namespace Briver.Framework
     /// </summary>
     public static class SystemContext
     {
-        private static readonly object state = new object();
+        private static readonly object @lock = new object();
         private static bool _initialized = false;
         private static Application _application = null;
         private static CompositionContext _composition = null;
@@ -34,7 +34,7 @@ namespace Briver.Framework
                 throw new ArgumentNullException(nameof(application));
             }
 
-            lock (state)
+            lock (@lock)
             {
                 if (_application != null)
                 {
@@ -77,7 +77,7 @@ namespace Briver.Framework
 
         private static void EnsureInitialized()
         {
-            lock (state)
+            lock (@lock)
             {
                 if (!_initialized)
                 {

@@ -3,10 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace System
 {
-    /// <summary>
-    /// 字符串的扩展方法
-    /// </summary>
-    public static partial class StringExtension
+    public static partial class ExtensionMethods
     {
         /// <summary>
         /// 是否空字符串

@@ -1,2 +1,2 @@
-Import-Module .\Briver.PSLib.dll
+Import-Module "$PSScriptRoot\Briver.PSLib.dll"
 Show-Commands

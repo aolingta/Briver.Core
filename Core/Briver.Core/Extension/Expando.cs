@@ -9,19 +9,16 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Briver.Runtime
+namespace System
 {
-    /// <summary>
-    /// 为对象提供扩展的属性
-    /// </summary>
-    public static partial class ExpandoExtension
+    public static partial class ExtensionMethods
     {
         /// <summary>
         /// 支持动态化的字典对象提供者
         /// </summary>
         private class DynamicProperties : DynamicObject
         {
-            ConcurrentDictionary<string, object> _cache = new ConcurrentDictionary<string, object>();
+            private ConcurrentDictionary<string, object> _cache = new ConcurrentDictionary<string, object>();
 
             /// <summary>
             /// 获取指定名称的值
@@ -30,7 +27,7 @@ namespace Briver.Runtime
             /// <returns></returns>
             public object GetValue(string name)
             {
-                if (String.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name))
                 {
                     throw new ArgumentException($"参数“{nameof(name)}”的值不能为空。");
                 }
@@ -45,7 +42,7 @@ namespace Briver.Runtime
             /// <param name="value">值</param>
             public void SetValue(string name, object value)
             {
-                if (String.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name))
                 {
                     throw new ArgumentException($"参数“{nameof(name)}”的值不能为空。");
                 }
@@ -66,9 +63,9 @@ namespace Briver.Runtime
 
         }
 
-        private static readonly ConditionalWeakTable<object, DynamicProperties> _cache = new ConditionalWeakTable<object, DynamicProperties>();
+        private static ConditionalWeakTable<object, DynamicProperties> _dynamicProperties = new ConditionalWeakTable<object, DynamicProperties>();
 
-        private static DynamicProperties GetProperties(object @this)
+        private static DynamicProperties GetDynamicProperties(object @this)
         {
             if (@this == null)
             {
@@ -79,7 +76,7 @@ namespace Briver.Runtime
                 throw new NotSupportedException($"参数“{nameof(@this)}”不能为值类型的对象");
             }
 
-            return _cache.GetOrCreateValue(@this);
+            return _dynamicProperties.GetOrCreateValue(@this);
         }
 
         /// <summary>
@@ -89,7 +86,7 @@ namespace Briver.Runtime
         /// <returns></returns>
         public static dynamic Expando(this object @this)
         {
-            return GetProperties(@this);
+            return GetDynamicProperties(@this);
         }
 
         /// <summary>
@@ -101,7 +98,7 @@ namespace Briver.Runtime
         /// <returns></returns>
         public static T Expando<T>(this object @this, string name)
         {
-            return (T)GetProperties(@this).GetValue(name);
+            return (T)GetDynamicProperties(@this).GetValue(name);
         }
 
         /// <summary>
@@ -113,7 +110,7 @@ namespace Briver.Runtime
         /// <param name="value">扩展属性的值</param>
         public static void Expando<T>(this object @this, string name, T value)
         {
-            GetProperties(@this).SetValue(name, value);
+            GetDynamicProperties(@this).SetValue(name, value);
         }
     }
 

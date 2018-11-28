@@ -11,15 +11,15 @@ using static System.Reflection.MethodBase;
 
 namespace Briver.Commands
 {
-    [Cmdlet(VerbsDiagnostic.Test, "EventCommand")]
-    public class TestEvent : Cmdlet, ICommand
+    [Cmdlet(VerbsDiagnostic.Test, "EventBus")]
+    public class TestEventBus : Cmdlet, ICommand
     {
         private class TestEventArgs : EventArgs { }
 
         [Parameter]
         public int Times { get; set; } = 1000;
 
-        Guid _token;
+        private EventBus.SubscriptionToken _token;
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
@@ -34,7 +34,7 @@ namespace Briver.Commands
             Console.WriteLine(GetCurrentMethod().ToString());
         }
 
-        CancellationTokenSource _cts = new CancellationTokenSource();
+        private CancellationTokenSource _cts = new CancellationTokenSource();
         protected override void ProcessRecord()
         {
             Console.WriteLine(GetCurrentMethod().ToString());
