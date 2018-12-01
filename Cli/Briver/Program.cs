@@ -21,6 +21,8 @@ namespace Briver
                 var app = new App();
                 SystemContext.Initialize(app);
 
+                Console.WriteLine($"系统版本：{app.Version}");
+
                 app.Aspect().Execute(args);
             }
             catch (Exception ex)
@@ -34,9 +36,12 @@ namespace Briver
     {
         protected override void Configure(ConfigurationBuilder config)
         {
-            var dir = Path.Combine(AppContext.BaseDirectory, "Config");
+            var dir = Path.Combine(this.BaseDirectory, "Config");
+            if (!Directory.Exists(dir))
+            {
+                return;
+            }
 
-            Directory.CreateDirectory(dir);
             foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
             {
                 config.AddJsonFile(file, false, true);

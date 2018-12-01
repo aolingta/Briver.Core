@@ -14,6 +14,8 @@ namespace Briver.Commands
             base.ProcessRecord();
             SystemContext.Initialize(new App());
 
+            Console.WriteLine(SystemContext.Application.BaseDirectory);
+
             Console.WriteLine("请使用以下命令：");
 
             int index = 0;

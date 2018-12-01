@@ -99,6 +99,18 @@ namespace Briver.Framework
             }
         }
 
+        /// <summary>
+        /// 应用程序
+        /// </summary>
+        public static Application Application
+        {
+            get
+            {
+                EnsureInitialized();
+                return _application;
+            }
+        }
+
 
         /// <summary>
         /// 获取导出列表

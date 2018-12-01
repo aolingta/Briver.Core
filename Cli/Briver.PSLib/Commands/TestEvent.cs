@@ -23,6 +23,8 @@ namespace Briver.Commands
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
+            SystemContext.Initialize(new App());
+
             _token = EventBus.Subscribe<TestEventArgs>((o, e) => { });
             Console.WriteLine(GetCurrentMethod().ToString());
         }
@@ -30,6 +32,7 @@ namespace Briver.Commands
         protected override void EndProcessing()
         {
             base.EndProcessing();
+
             EventBus.Unsubscribe(_token);
             Console.WriteLine(GetCurrentMethod().ToString());
         }
@@ -38,7 +41,8 @@ namespace Briver.Commands
         protected override void ProcessRecord()
         {
             Console.WriteLine(GetCurrentMethod().ToString());
-            SystemContext.Initialize(new App());
+            try
+            {
 
             var watch = Stopwatch.StartNew();
             Parallel.For(0, Times, (ii, ss) =>
@@ -50,6 +54,11 @@ namespace Briver.Commands
             var message = $"处理{Times}次消息，用时{watch.Elapsed.TotalMilliseconds}毫秒";
             Console.WriteLine(message, true);
             Logger.Warn(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         protected override void StopProcessing()

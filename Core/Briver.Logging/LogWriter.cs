@@ -31,11 +31,11 @@ namespace Briver.Logging
             }
             if (string.IsNullOrEmpty(_outputDir))
             {
-                _outputDir = Path.Combine(AppContext.BaseDirectory, "Log");
+                _outputDir = Path.Combine(SystemContext.Application.WorkDirectory, "Log");
             }
             else if (!Path.IsPathRooted(_outputDir))
             {
-                _outputDir = Path.Combine(AppContext.BaseDirectory, _outputDir);
+                _outputDir = Path.Combine(SystemContext.Application.WorkDirectory, _outputDir);
             }
         }
 

@@ -16,6 +16,27 @@ namespace Briver.Framework
     public abstract class Application
     {
         /// <summary>
+        /// 基准目录（执行程序所在的目录）
+        /// </summary>
+        public virtual string BaseDirectory { get; } = AppContext.BaseDirectory;
+
+        /// <summary>
+        /// 用户目录（存放用户相关的配置等）
+        /// </summary>
+        public virtual string UserDirectory => this.BaseDirectory;
+
+        /// <summary>
+        /// 工作目录（存放日志、临时数据等）
+        /// </summary>
+        public virtual string WorkDirectory => this.BaseDirectory;
+
+        /// <summary>
+        /// 系统版本
+        /// </summary>
+        public virtual Version Version
+            => System.Version.Parse(this.GetType().Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version);
+
+        /// <summary>
         /// 执行配置
         /// </summary>
         /// <param name="config"></param>
@@ -38,7 +59,7 @@ namespace Briver.Framework
                 }
             }
 
-            foreach (var file in Directory.EnumerateFiles(AppContext.BaseDirectory, "*.dll"))
+            foreach (var file in Directory.EnumerateFiles(this.BaseDirectory, "*.dll"))
             {
                 var name = Path.GetFileNameWithoutExtension(file).ToLower();
                 if (!assemblies.ContainsKey(name))
