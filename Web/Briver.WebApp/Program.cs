@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,9 +30,12 @@ namespace Briver.WebApp
     {
         protected override void Configure(ConfigurationBuilder config)
         {
-            var dir = Path.Combine(AppContext.BaseDirectory, "Config");
+            var dir = Path.Combine(this.BaseDirectory, "Config");
+            if (!Directory.Exists(dir))
+            {
+                return;
+            }
 
-            Directory.CreateDirectory(dir);
             foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
             {
                 config.AddJsonFile(file, false, true);
