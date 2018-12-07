@@ -81,13 +81,13 @@ namespace System
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="this">当前对象</param>
-        /// <param name="callback">要执行的动作</param>
+        /// <param name="action">要执行的动作</param>
         /// <returns></returns>
-        public static T Do<T>(this T @this, Action<T> callback)
+        public static T Do<T>(this T @this, Action<T> action)
         {
-            if (@this != null && callback != null)
+            if (@this != null && action != null)
             {
-                callback(@this);
+                action(@this);
             }
             return @this;
         }
@@ -97,13 +97,13 @@ namespace System
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="this">当前对象</param>
         /// <param name="predicate">前置条件</param>
-        /// <param name="callback">要执行的动作</param>
+        /// <param name="action">要执行的动作</param>
         /// <returns></returns>
-        public static T Do<T>(this T @this, Predicate<T> predicate, Action<T> callback)
+        public static T Do<T>(this T @this, Predicate<T> predicate, Action<T> action)
         {
-            if (@this != null && predicate != null && callback != null && predicate(@this))
+            if (@this != null && predicate != null && action != null && predicate(@this))
             {
-                callback(@this);
+                action(@this);
             }
             return @this;
         }
