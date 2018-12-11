@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Briver": {
-      "commandName": "Project",
-      "commandLineArgs": "Test Event --times=1000000"
+      "commandName": "Project"
     }
   }
 }
