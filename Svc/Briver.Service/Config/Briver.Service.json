@@ -1,0 +1,11 @@
+{
+    "StartupPlugin": {
+        "Jobs": [
+            {
+                "Name": "VirtualDisk",
+                "Command": "subst",
+                "Argument": "F: C:\\Disk"
+            }
+        ]
+    }
+}
