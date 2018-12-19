@@ -9,40 +9,39 @@ using Microsoft.Extensions.Configuration;
 
 namespace Briver.Plugins
 {
-    public class StartupPlugin : ISystemInitialization
+    public class VirtualDisk : ISystemInitialization
     {
         public class Config
         {
-            public class Job
+            public class Mapping
             {
-                public string Name { get; set; }
-                public string Command { get; set; }
-                public string Argument { get; set; }
+                public string Driver { get; set; }
+                public string Directory { get; set; }
             }
 
-            public List<Job> Jobs { get; } = new List<Job>();
+            public List<Mapping> Mappings { get; } = new List<Mapping>();
         }
 
         void ISystemInitialization.Execute()
         {
-            var config = SystemContext.Configuration.GetSection(nameof(StartupPlugin)).Get<Config>();
-            foreach (var job in config.Jobs)
+            var config = SystemContext.Configuration.GetSection(nameof(VirtualDisk)).Get<Config>();
+            foreach (var item in config.Mappings)
             {
                 try
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = job.Command,
-                        Arguments = job.Argument,
+                        FileName = "subst",
+                        Arguments = $"{item.Driver} {item.Directory}",
                         UseShellExecute = false,
 
                     }).WaitForExit();
 
-                    Logger.Info($"执行任务“{job.Name}”成功");
+                    Logger.Info($"映射盘符“{item.Driver}”成功");
                 }
                 catch (Exception ex)
                 {
-                    Logger.Warn($"执行任务“{job.Name}”失败", ex.ToString());
+                    Logger.Warn($"映射盘符“{item.Driver}”失败", ex.ToString());
                 }
             }
         }

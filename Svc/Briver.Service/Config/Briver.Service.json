@@ -1,10 +1,9 @@
 {
-    "StartupPlugin": {
-        "Jobs": [
+    "VirtualDisk": {
+        "Mappings": [
             {
-                "Name": "VirtualDisk",
-                "Command": "subst",
-                "Argument": "F: C:\\Disk"
+                "Driver": "D:",
+                "Directory": "C:\\Disk"
             }
         ]
     }
