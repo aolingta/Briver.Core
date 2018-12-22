@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <PackageId>Briver.Logging.netstandard</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/chenyj796/Briver.NetCore</PackageProjectUrl>
+    <Description>面向.NetStandard的日志框架</Description>
+    <Authors>chenyj</Authors>
+    <Company>chenyj</Company>
   </PropertyGroup>
 
   <ItemGroup>

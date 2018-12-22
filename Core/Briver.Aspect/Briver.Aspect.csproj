@@ -3,6 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <PackageId>Briver.Aspect.netstandard</PackageId>
+    <Description>面向.NetStandard的切面框架</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/chenyj796/Briver.NetCore</PackageProjectUrl>
+    <Authors>chenyj</Authors>
   </PropertyGroup>
 
   <ItemGroup>
