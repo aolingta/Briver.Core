@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using Briver.Framework;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace Briver.Framework
 {
@@ -15,6 +16,17 @@ namespace Briver.Framework
     /// </summary>
     public abstract class Application
     {
+        /// <summary>
+        /// 系统信息
+        /// </summary>
+        protected class Information
+        {
+            public string Name { get; set; }
+            public string Version { get; set; }
+            public string DisplayName { get; set; }
+            public string Description { get; set; }
+        }
+
         /// <summary>
         /// 基准目录（执行程序所在的目录）
         /// </summary>
@@ -28,13 +40,88 @@ namespace Briver.Framework
         /// <summary>
         /// 工作目录（存放日志、临时数据等）
         /// </summary>
-        public virtual string WorkDirectory => this.BaseDirectory;
+        public virtual string WorkDirectory => this.UserDirectory;
+
+        private Lazy<Information> _information;
+
+        /// <summary>
+        /// 系统名称
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                var name = _information.Value.Name;
+                if (string.IsNullOrEmpty(name))
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"文件“{information_file}”中的“{nameof(Name)}”为空");
+                }
+                return name;
+            }
+        }
 
         /// <summary>
         /// 系统版本
         /// </summary>
-        public virtual Version Version
-            => System.Version.Parse(this.GetType().Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version);
+        public string Version
+        {
+            get
+            {
+                var version = _information.Value.Version;
+                if (string.IsNullOrEmpty(version))
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"文件“{information_file}”中的“{nameof(Version)}”为空");
+                }
+                return version;
+            }
+        }
+
+        /// <summary>
+        /// 系统显示名称
+        /// </summary>
+        public string DisplayName
+        {
+            get
+            {
+                var displayName = _information.Value.DisplayName;
+                if (string.IsNullOrEmpty(displayName))
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"文件“{information_file}”中的“{nameof(DisplayName)}”为空");
+                }
+                return displayName;
+            }
+        }
+
+        /// <summary>
+        /// 系统说明
+        /// </summary>
+        public string Description => _information.Value.Description;
+
+        public Application()
+        {
+            _information = new Lazy<Information>(LoadInformation);
+        }
+
+        private const string information_file = "Application.json";
+        protected virtual Information LoadInformation()
+        {
+            string BuildErrorText()
+            {
+                return $"运行目录“{this.BaseDirectory}”下不存在文件“{information_file}”或者此文件不是有效的json格式，请确保此文件存在并且使用{Encoding.UTF8.EncodingName}编码。";
+            }
+            var path = Path.Combine(this.BaseDirectory, information_file);
+            if (!File.Exists(path))
+            {
+                throw new FrameworkException(ExceptionLevel.Fatal, BuildErrorText());
+            }
+            var json = File.ReadAllText(path, Encoding.UTF8);
+            var info = JsonConvert.DeserializeObject<Information>(json);
+            if (info == null)
+            {
+                throw new FrameworkException(ExceptionLevel.Fatal, BuildErrorText());
+            }
+            return info;
+        }
 
         /// <summary>
         /// 执行配置
@@ -79,7 +166,5 @@ namespace Briver.Framework
         }
 
     }
-
-
 
 }

@@ -16,4 +16,10 @@
     <ProjectReference Include="..\Briver.Web\Briver.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Application.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

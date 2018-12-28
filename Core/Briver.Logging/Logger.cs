@@ -13,6 +13,11 @@ namespace Briver.Logging
     /// </summary>
     public static class Logger
     {
+        class Config
+        {
+            public LogLevel MinLevel { get; set; }
+        }
+
         private static Thread _thread;
         private static readonly LogLevel _minLevel = LogLevel.Info;
         private static readonly IEnumerable<ILogWriter> _writers;
@@ -23,8 +28,7 @@ namespace Briver.Logging
 
         static Logger()
         {
-            var config = SystemContext.Configuration
-                .GetSection(nameof(Logger))?.Get<Configuration.Logger>();
+            var config = SystemContext.Configuration.GetSection(nameof(Logger))?.Get<Config>();
             if (config != null)
             {
                 _minLevel = config.MinLevel;
