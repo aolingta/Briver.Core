@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Application.json" />
+    <None Remove="Briver.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Application.json">
+    <Content Include="Briver.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

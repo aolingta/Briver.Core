@@ -24,11 +24,7 @@ namespace Briver
             {
                 var app = new App();
                 SystemContext.Initialize(app);
-
-                //Console.WriteLine(SystemContext.Application.Name);
-
-                Console.WriteLine($"系统版本：{app.Version}");
-
+                Console.WriteLine($"{app.Name} {app.Version}");
                 app.Aspect().Execute(args);
             }
             catch (Exception ex)
@@ -61,7 +57,7 @@ namespace Briver
         /// <returns></returns>
         protected override Information LoadInformation()
         {
-            var information_file = "Application.json";
+            var information_file = "Briver.json";
             string BuildErrorText()
             {
                 return $"运行目录“{this.BaseDirectory}”下不存在文件“{information_file}”或者此文件不是有效的json格式，请确保此文件存在并且使用{Encoding.UTF8.EncodingName}编码。";

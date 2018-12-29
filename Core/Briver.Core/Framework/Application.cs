@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace Briver.Framework
 {
@@ -60,21 +61,6 @@ namespace Briver.Framework
             }
         }
 
-        /// <summary>
-        /// 基准目录（执行程序所在的目录）
-        /// </summary>
-        public virtual string BaseDirectory { get; } = AppContext.BaseDirectory;
-
-        /// <summary>
-        /// 用户目录（存放用户相关的配置等）
-        /// </summary>
-        public virtual string UserDirectory => this.BaseDirectory;
-
-        /// <summary>
-        /// 工作目录（存放日志、临时数据等）
-        /// </summary>
-        public virtual string WorkDirectory => this.UserDirectory;
-
         private Lazy<Information> _information;
 
         /// <summary>
@@ -96,6 +82,22 @@ namespace Briver.Framework
         /// 系统说明
         /// </summary>
         public string Description => _information.Value.Description;
+
+        /// <summary>
+        /// 基准目录（执行程序所在的目录）
+        /// </summary>
+        public virtual string BaseDirectory { get; } = AppContext.BaseDirectory;
+
+        /// <summary>
+        /// 用户目录（存放用户相关的配置等）
+        /// </summary>
+        public virtual string UserDirectory => this.BaseDirectory;
+
+        /// <summary>
+        /// 工作目录（存放日志、临时数据等）
+        /// </summary>
+        public virtual string WorkDirectory => this.UserDirectory;
+
 
         public Application()
         {
@@ -144,6 +146,11 @@ namespace Briver.Framework
             }
 
             return assemblies.Values;
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
         }
 
     }
