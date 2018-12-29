@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Core", "Core\Briver.Core\Briver.Core.csproj", "{83C8A181-092F-4FF4-BF3E-D298C1459681}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4} = {C125628C-DBC8-4241-A7FE-825835F0EFA4}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Web", "3.Web", "{A0DFFFD5-DF97-427A-BB37-DD36A44401D0}"
 EndProject
@@ -12,16 +15,35 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Cli", "2.Cli", "{75E3C5B8-F329-40D8-98A1-14EDDE729ABD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Web", "Web\Briver.Web\Briver.Web.csproj", "{201425E5-2D75-429F-A6A8-1246DF6B854D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4} = {C125628C-DBC8-4241-A7FE-825835F0EFA4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver", "Cli\Briver\Briver.csproj", "{93D3DBBA-0D28-4541-9874-2AA748123897}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4} = {C125628C-DBC8-4241-A7FE-825835F0EFA4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.PSLib", "Cli\Briver.PSLib\Briver.PSLib.csproj", "{7592366A-8B88-4CC5-89F5-B72B283B5A60}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4} = {C125628C-DBC8-4241-A7FE-825835F0EFA4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.WebApp", "Web\Briver.WebApp\Briver.WebApp.csproj", "{5BCDB262-09F3-4D0B-9377-B0F15AC09EBF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4} = {C125628C-DBC8-4241-A7FE-825835F0EFA4}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Svc", "4.Svc", "{D79D4202-49E2-4AE4-9D90-CE4D2A902EBD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Service", "Svc\Briver.Service\Briver.Service.csproj", "{D55BA854-BF5F-4924-9A97-DF373685C547}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4} = {C125628C-DBC8-4241-A7FE-825835F0EFA4}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9.Tool", "9.Tool", "{C7169B2E-6FD6-4D66-9131-8460D585CF58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatchVersion", "Tool\PatchVersion\PatchVersion.csproj", "{C125628C-DBC8-4241-A7FE-825835F0EFA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +75,10 @@ Global
 		{D55BA854-BF5F-4924-9A97-DF373685C547}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D55BA854-BF5F-4924-9A97-DF373685C547}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D55BA854-BF5F-4924-9A97-DF373685C547}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +90,7 @@ Global
 		{7592366A-8B88-4CC5-89F5-B72B283B5A60} = {75E3C5B8-F329-40D8-98A1-14EDDE729ABD}
 		{5BCDB262-09F3-4D0B-9377-B0F15AC09EBF} = {A0DFFFD5-DF97-427A-BB37-DD36A44401D0}
 		{D55BA854-BF5F-4924-9A97-DF373685C547} = {D79D4202-49E2-4AE4-9D90-CE4D2A902EBD}
+		{C125628C-DBC8-4241-A7FE-825835F0EFA4} = {C7169B2E-6FD6-4D66-9131-8460D585CF58}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA094A05-FDA3-431D-BF7D-F7AB8A0D27B0}

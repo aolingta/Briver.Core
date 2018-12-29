@@ -40,7 +40,7 @@ namespace Briver.Framework
             /// </summary>
             public string Description { get; set; }
 
-            internal void ValidateProperties()
+            internal Information ValidateProperties()
             {
                 if (string.IsNullOrWhiteSpace(this.Name))
                 {
@@ -58,6 +58,8 @@ namespace Briver.Framework
                 {
                     throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(DisplayName)}”为空");
                 }
+
+                return this;
             }
         }
 
@@ -101,7 +103,7 @@ namespace Briver.Framework
 
         public Application()
         {
-            _information = new Lazy<Information>(() => this.LoadInformation().Do(it => it.ValidateProperties()));
+            _information = new Lazy<Information>(() => this.LoadInformation().ValidateProperties());
         }
 
         protected abstract Information LoadInformation();

@@ -8,4 +8,8 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="..\..\PatchVersion.exe $(OutputPath)Briver.Web.dll" />
+  </Target>
+
 </Project>

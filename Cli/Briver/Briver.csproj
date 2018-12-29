@@ -36,4 +36,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="..\..\PatchVersion.exe $(OutputPath)Briver.dll" />
+  </Target>
+
 </Project>

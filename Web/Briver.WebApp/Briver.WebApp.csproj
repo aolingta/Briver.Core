@@ -20,4 +20,8 @@
     </Content>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="..\..\PatchVersion.exe $(OutputPath)Briver.WebApp.dll" />
+  </Target>
+
 </Project>

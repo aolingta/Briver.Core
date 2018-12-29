@@ -36,4 +36,8 @@
     <PackageReference Include="System.Composition" Version="1.2.0" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="..\..\PatchVersion.exe $(OutputPath)Briver.Core.dll" />
+  </Target>
+
 </Project>
