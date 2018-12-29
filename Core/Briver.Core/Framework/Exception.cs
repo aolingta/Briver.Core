@@ -36,7 +36,7 @@ namespace Briver.Framework
 
         private static string BuildMessage(ExceptionLevel level, string message)
         {
-            return $"发生{level}异常，{message}";
+            return $"发生{level}异常：{message}";
         }
         /// <summary>
         /// 业务框架异常

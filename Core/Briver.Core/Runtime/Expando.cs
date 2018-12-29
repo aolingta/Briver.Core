@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System
+namespace Briver.Runtime
 {
     public static partial class ExtensionMethods
     {

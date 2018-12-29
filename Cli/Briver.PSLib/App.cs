@@ -26,5 +26,15 @@ namespace Briver
                 config.AddJsonFile(file, false, true);
             }
         }
+
+        protected override Information LoadInformation()
+        {
+            return new Information
+            {
+                Name = "Briver.PSLib",
+                Version = "1.0",
+                DisplayName = ""
+            };
+        }
     }
 }

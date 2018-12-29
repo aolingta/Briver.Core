@@ -5,9 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Briver.Framework;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 
 namespace Briver.Framework
 {
@@ -21,10 +19,45 @@ namespace Briver.Framework
         /// </summary>
         protected class Information
         {
+            /// <summary>
+            /// 系统名称（不能为空）
+            /// </summary>
             public string Name { get; set; }
+
+            /// <summary>
+            /// 系统版本（不能为空且必须符合System.Version要求）
+            /// </summary>
             public string Version { get; set; }
+
+            /// <summary>
+            /// 系统显示名称（不能为空）
+            /// </summary>
             public string DisplayName { get; set; }
+
+            /// <summary>
+            /// 系统说明
+            /// </summary>
             public string Description { get; set; }
+
+            internal void ValidateProperties()
+            {
+                if (string.IsNullOrWhiteSpace(this.Name))
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(Name)}”为空");
+                }
+                if (string.IsNullOrWhiteSpace(this.Version))
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(Version)}”为空");
+                }
+                if (!System.Version.TryParse(this.Version, out var version))
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(Version)}”不是有效的System.Version");
+                }
+                if (string.IsNullOrWhiteSpace(this.DisplayName))
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(DisplayName)}”为空");
+                }
+            }
         }
 
         /// <summary>
@@ -47,50 +80,17 @@ namespace Briver.Framework
         /// <summary>
         /// 系统名称
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                var name = _information.Value.Name;
-                if (string.IsNullOrEmpty(name))
-                {
-                    throw new FrameworkException(ExceptionLevel.Fatal, $"文件“{information_file}”中的“{nameof(Name)}”为空");
-                }
-                return name;
-            }
-        }
+        public string Name => _information.Value.Name;
 
         /// <summary>
         /// 系统版本
         /// </summary>
-        public string Version
-        {
-            get
-            {
-                var version = _information.Value.Version;
-                if (string.IsNullOrEmpty(version))
-                {
-                    throw new FrameworkException(ExceptionLevel.Fatal, $"文件“{information_file}”中的“{nameof(Version)}”为空");
-                }
-                return version;
-            }
-        }
+        public string Version => _information.Value.Version;
 
         /// <summary>
         /// 系统显示名称
         /// </summary>
-        public string DisplayName
-        {
-            get
-            {
-                var displayName = _information.Value.DisplayName;
-                if (string.IsNullOrEmpty(displayName))
-                {
-                    throw new FrameworkException(ExceptionLevel.Fatal, $"文件“{information_file}”中的“{nameof(DisplayName)}”为空");
-                }
-                return displayName;
-            }
-        }
+        public string DisplayName => _information.Value.DisplayName;
 
         /// <summary>
         /// 系统说明
@@ -99,29 +99,10 @@ namespace Briver.Framework
 
         public Application()
         {
-            _information = new Lazy<Information>(LoadInformation);
+            _information = new Lazy<Information>(() => this.LoadInformation().Do(it => it.ValidateProperties()));
         }
 
-        private const string information_file = "Application.json";
-        protected virtual Information LoadInformation()
-        {
-            string BuildErrorText()
-            {
-                return $"运行目录“{this.BaseDirectory}”下不存在文件“{information_file}”或者此文件不是有效的json格式，请确保此文件存在并且使用{Encoding.UTF8.EncodingName}编码。";
-            }
-            var path = Path.Combine(this.BaseDirectory, information_file);
-            if (!File.Exists(path))
-            {
-                throw new FrameworkException(ExceptionLevel.Fatal, BuildErrorText());
-            }
-            var json = File.ReadAllText(path, Encoding.UTF8);
-            var info = JsonConvert.DeserializeObject<Information>(json);
-            if (info == null)
-            {
-                throw new FrameworkException(ExceptionLevel.Fatal, BuildErrorText());
-            }
-            return info;
-        }
+        protected abstract Information LoadInformation();
 
         /// <summary>
         /// 执行配置

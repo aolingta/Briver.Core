@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace System
+namespace Briver.Runtime
 {
     public static partial class ExtensionMethods
     {

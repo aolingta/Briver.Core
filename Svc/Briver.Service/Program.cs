@@ -58,5 +58,15 @@ namespace Briver
                 }
             }
         }
+
+        protected override Information LoadInformation()
+        {
+            return new Information
+            {
+                Name = "Briver.Service",
+                Version = "1.0",
+                DisplayName = "自定义系统服务"
+            };
+        }
     }
 }

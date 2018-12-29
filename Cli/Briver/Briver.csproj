@@ -27,9 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Briver.Aspect\Briver.Aspect.csproj" />
     <ProjectReference Include="..\..\Core\Briver.Core\Briver.Core.csproj" />
-    <ProjectReference Include="..\..\Core\Briver.Logging\Briver.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>

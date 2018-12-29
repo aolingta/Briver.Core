@@ -43,5 +43,14 @@ namespace Briver.WebApp
 
         }
 
+        protected override Information LoadInformation()
+        {
+            return new Information
+            {
+                Name = "Briver.WebApp",
+                Version = "1.0",
+                DisplayName = "自定义网站应用"
+            };
+        }
     }
 }
