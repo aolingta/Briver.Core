@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rem dir &quot;$(MSBuildProjectDirectory)&quot;&#xD;&#xA;&#xD;&#xA;..\..\PatchVersion.exe $(OutputPath)Briver.PSLib.dll" />
+    <Exec Command="rem dir &quot;$(MSBuildProjectDirectory)&quot;&#xD;&#xA;&#xD;&#xA;..\..\PatchVersion.exe $(OutputPath)$(AssemblyName).dll" />
   </Target>
 
 </Project>

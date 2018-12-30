@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="..\..\PatchVersion.exe $(OutputPath)Briver.Service.dll" />
+    <Exec Command="..\..\PatchVersion.exe $(OutputPath)$(AssemblyName).dll" />
   </Target>
 
 </Project>

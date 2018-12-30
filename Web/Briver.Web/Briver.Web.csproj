@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="..\..\PatchVersion.exe $(OutputPath)Briver.Web.dll" />
+    <Exec Command="..\..\PatchVersion.exe $(OutputPath)$(AssemblyName).dll" />
   </Target>
 
 </Project>
