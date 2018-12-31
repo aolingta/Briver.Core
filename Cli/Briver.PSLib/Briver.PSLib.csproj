@@ -9,17 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Application.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\..\Web\Briver.Web\HttpContent.cs" Link="Http\HttpContent.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Application.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

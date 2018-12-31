@@ -11,15 +11,25 @@ using Briver.WebApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Briver.WebApp.Api
+namespace Briver.WebApp.Api.Controllers
 {
+
+    /// <summary>
+    /// 用户控制器
+    /// </summary>
     [ApiController]
-    [Route("api/user")]
-    [Route("api/v1/user")]
-    public class UserController : Controller
+    [Route("api/[controller]")]
+    [Route("api/v{version:ApiVersion}/[controller]")]
+    public abstract class UserController : Controller
     {
-        [HttpGet("list")]
-        public IActionResult List()
+        protected const string ControllerName = "User";
+
+        /// <summary>
+        /// 列出所有用户
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet(nameof(List))]
+        public virtual IActionResult List()
         {
             var repository = new UserRepository();
             var count = 10000;
@@ -35,16 +45,52 @@ namespace Briver.WebApp.Api
             var conn = (string)repository.Aspect().Conn;
             repository.Aspect().Save();
 
-            return new ApiResult(0, repository.Aspect().GetUsers());
+            return new ApiResult(true) { Content = repository.Aspect().GetUsers() };
+        }
+
+        /// <summary>
+        /// 查询状态
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet(nameof(Status))]
+        public virtual IActionResult Status()
+        {
+            return ApiResult.VersionUnsupported;
+        }
+
+    }
+
+    [ApiVersion("1.0")]
+    [ControllerName(ControllerName)]
+    public class UserControllerV1 : UserController
+    {
+    }
+
+
+    [ApiVersion("2.0")]
+    [ControllerName(ControllerName)]
+    public class UserControllerV2 : UserControllerV1
+    {
+        public override IActionResult List()
+        {
+            return new ApiResult(true)
+            {
+                Content = new UserModel[] {
+                    new UserModel { Name = "chenyj", Time = DateTime.Now },
+                    new UserModel { Name = "陈勇江" }
+                }
+            };
+        }
+
+        public override IActionResult Status()
+        {
+            return new ApiResult(true) { Message = "OK" };
         }
     }
 
-    [Route("api/v2/user")]
-    public class UserController2 : UserController
-    {
-
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [Log(Priority = 1)]
     public class UserRepository
     {

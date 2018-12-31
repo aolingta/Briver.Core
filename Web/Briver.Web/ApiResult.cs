@@ -13,52 +13,27 @@ namespace Briver.Web
     public class ApiResult : IActionResult
     {
         /// <summary>
-        ///  响应状态
+        /// 状态
         /// </summary>
-        public class ResponseStatus
-        {
-            /// <summary>
-            /// 代码
-            /// </summary>
-            public int Code { get; }
-
-            /// <summary>
-            /// 消息
-            /// </summary>
-            public string Message { get; }
-
-            /// <summary>
-            /// 响应状态
-            /// </summary>
-            /// <param name="code">代码</param>
-            /// <param name="message">消息</param>
-            internal ResponseStatus(int code, string message)
-            {
-                this.Code = code;
-                this.Message = message;
-            }
-        }
+        public bool Status { get; }
 
         /// <summary>
-        /// 响应状态
+        /// 消息内容
         /// </summary>
-        public ResponseStatus Status { get; }
+        public string Message { get; set; }
 
         /// <summary>
         /// 数据
         /// </summary>
-        public object Content { get; }
+        public object Content { get; set; }
 
         /// <summary>
         /// 接口响应结果
         /// </summary>
-        /// <param name="code">代码</param>
-        /// <param name="content">数据</param>
-        /// <param name="message">消息</param>
-        public ApiResult(int code, object content = null, string message = null)
+        /// <param name="status">状态</param>
+        public ApiResult(bool status)
         {
-            this.Status = new ResponseStatus(code, message);
-            this.Content = content;
+            this.Status = status;
         }
 
         /// <summary>
@@ -70,6 +45,11 @@ namespace Briver.Web
         {
             await new OkObjectResult(this).ExecuteResultAsync(context);
         }
+
+        /// <summary>
+        /// 版本不支持
+        /// </summary>
+        public static ApiResult VersionUnsupported => new ApiResult(false) { Message = "请使用更高版本的接口" };
     }
 
 }
