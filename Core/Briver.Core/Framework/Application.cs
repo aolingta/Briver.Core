@@ -112,7 +112,17 @@ namespace Briver.Framework
         /// 执行配置
         /// </summary>
         /// <param name="config"></param>
-        protected internal abstract void Configure(ConfigurationBuilder config);
+        protected internal virtual void Configure(ConfigurationBuilder config)
+        {
+            var dir = Path.Combine(this.UserDirectory, "Config");
+            if (Directory.Exists(dir))
+            {
+                foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
+                {
+                    config.AddJsonFile(file, false, true);
+                }
+            }
+        }
 
         /// <summary>
         /// 加载系统要用到的程序集

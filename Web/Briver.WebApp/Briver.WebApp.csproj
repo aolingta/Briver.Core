@@ -4,13 +4,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>D:\GIT\Briver.NetCore\Web\Briver.WebApp\Briver.WebApp.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\GIT\Briver.NetCore\Web\Briver.WebApp\Briver.WebApp.xml</DocumentationFile>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
@@ -24,12 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Briver.Core\Briver.Core.csproj" />
     <ProjectReference Include="..\Briver.Web\Briver.Web.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Application.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

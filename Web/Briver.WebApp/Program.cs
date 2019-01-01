@@ -28,21 +28,6 @@ namespace Briver.WebApp
 
     internal class App : Application
     {
-        protected override void Configure(ConfigurationBuilder config)
-        {
-            var dir = Path.Combine(this.BaseDirectory, "Config");
-            if (!Directory.Exists(dir))
-            {
-                return;
-            }
-
-            foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
-            {
-                config.AddJsonFile(file, false, true);
-            }
-
-        }
-
         protected override Information LoadInformation()
         {
             return new Information

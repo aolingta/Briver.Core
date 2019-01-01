@@ -37,20 +37,6 @@ namespace Briver
 
     internal class App : Application
     {
-        protected override void Configure(ConfigurationBuilder config)
-        {
-            var dir = Path.Combine(this.BaseDirectory, "Config");
-            if (!Directory.Exists(dir))
-            {
-                return;
-            }
-
-            foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
-            {
-                config.AddJsonFile(file, false, true);
-            }
-        }
-
         /// <summary>
         /// 通过读取文件加载信息
         /// </summary>
