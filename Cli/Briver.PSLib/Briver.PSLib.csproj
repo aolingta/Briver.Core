@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rem dir &quot;$(MSBuildProjectDirectory)&quot;&#xD;&#xA;&#xD;&#xA;..\..\PatchVersion.exe $(OutputPath)$(AssemblyName).dll" />
+    <Exec Command="$(ProjectDir)..\..\PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).dll" />
   </Target>
 
 </Project>

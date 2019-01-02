@@ -16,7 +16,7 @@ namespace PatchVersion
     /// 此程序用来在编译后，修改AssemblyInformationVersionAttribute及文件属性中的产品版本信息
     /// 使用方法：
     /// 在项目属性的“生成事件”页中的“后期生成事件命令行”中输入如下的命令：
-    /// PatchVersion.exe $(OutputPath)$(AssemblyName).dll
+    /// $(ProjectDir)PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).dll
     /// 注：假定PatchVersion.exe工具已经放到项目文件夹下
     ///     $(OutputPath)变量表示目标生成输出文件夹
     /// </summary>
@@ -33,18 +33,14 @@ namespace PatchVersion
             var file = Path.GetFullPath(args[0]);
             try
             {
-
-                switch (Path.GetExtension(file).ToLower())
+                var extension = Path.GetExtension(file).ToLower();
+                if (extension != ".dll" && extension != ".exe")
                 {
-                    case ".dll":
-                    case ".exe":
-                        if (!File.Exists(file))
-                        {
-                            throw new Exception("文件不存在");
-                        }
-                        break;
-                    default:
-                        throw new Exception("扩展名无效");
+                    throw new Exception("扩展名无效");
+                }
+                if (!File.Exists(file))
+                {
+                    throw new Exception("文件不存在");
                 }
 
                 var information = BuildInformation(file);

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="..\..\PatchVersion.exe $(OutputPath)$(AssemblyName).dll&#xD;&#xA;..\..\PatchVersion.exe $(OutputPath)$(AssemblyName).Views.dll" />
+    <Exec Command="$(ProjectDir)..\..\PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).dll&#xD;&#xA;$(ProjectDir)..\..\PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).Views.dll" />
   </Target>
 
 </Project>

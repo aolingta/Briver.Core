@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Briver.WebApp</name>
+    </assembly>
+    <members>
+        <member name="T:Briver.WebApp.Api.Controllers.UserController">
+            <summary>
+            用户控制器
+            </summary>
+        </member>
+        <member name="M:Briver.WebApp.Api.Controllers.UserController.List">
+            <summary>
+            列出所有用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Briver.WebApp.Api.Controllers.UserController.Status">
+            <summary>
+            查询状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Briver.WebApp.Api.Controllers.UserRepository">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>
