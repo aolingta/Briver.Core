@@ -261,3 +261,6 @@ __pycache__/
 *.pyc
 
 *.exe
+*.zip
+/BuildVersion.ReadMe.txt
+/BuildVersion.exe.config

@@ -1,0 +1,17 @@
+﻿/* ****************************************************************************
+ * BuildVersion V1.0
+ *
+ * 功能说明：
+ * 用于将编译时的GIT版本信息写入程序集文件。
+ * 
+ * 使用方法：
+ * 在项目“属性”的“生成事件”页的“生成前事件命令行”里添加命令
+ * $(ProjectDir)BuildVersion.exe $(ProjectDir)
+ * 注：此命令假定已经将BuildVersion.exe放在项目文件夹里，否则请自行调整工具的相对目录
+ * 
+ * 如果编译时报错：CS0579	 “System.Reflection.AssemblyInformationalVersionAttribute”特性重复
+ * 1）移除AssemblyInfo.cs文件中的同名特性
+ * 2）在.csproj文件中，添加PropertyGroup项：
+ *     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+ *     
+ * ***************************************************************************/
