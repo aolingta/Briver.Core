@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\InformationVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -57,5 +58,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(ProjectDir)$(OutputPath)$(AssemblyName).* $(ProjectDir)..\..\ /I /Y</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>if exist $(ProjectDir)..\..\BuildVersion.exe (
+   $(ProjectDir)..\..\BuildVersion.exe $(ProjectDir)
+) 
+</PreBuildEvent>
   </PropertyGroup>
 </Project>
