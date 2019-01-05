@@ -53,7 +53,7 @@ namespace BuildVersion
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{nameof(BuildVersion)}: {ex.ToString()}");
+                Console.WriteLine($"{nameof(BuildVersion)}: {ex.Message}");
             }
 
         }
