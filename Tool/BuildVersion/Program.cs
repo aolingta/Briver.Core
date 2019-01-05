@@ -115,21 +115,19 @@ namespace BuildVersion
                     if (File.Exists(file)) { return; }
 
                     File.WriteAllText(file, "请勿删除此文件");
+
+                    // 在.gitignore文件中添加“InformationVersion.cs”
                     var ignore = Path.Combine(projectPath, ".gitignore");
                     using (var stream = File.Open(ignore, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                     {
-                        var exist = false;
                         var reader = new StreamReader(stream, Encoding.UTF8);
                         while (!reader.EndOfStream)
                         {
-                            var line = reader.ReadLine();
-                            if (string.Equals(line, OutputFile))
+                            if (string.Equals(reader.ReadLine(), OutputFile))
                             {
-                                exist = true;
-                                break;
+                                return;
                             }
                         }
-                        if (exist) { return; }
 
                         stream.Seek(0L, SeekOrigin.End);
                         var writer = new StreamWriter(stream, Encoding.UTF8);
