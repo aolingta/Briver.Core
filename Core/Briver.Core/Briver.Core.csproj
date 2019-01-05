@@ -14,6 +14,7 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <Company>chenyj</Company>
     <FileVersion>1.1.0</FileVersion>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -29,8 +30,8 @@
     <PackageReference Include="System.Composition" Version="1.2.0" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).dll" />
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\BuildVersion.exe $(ProjectDir)" />
   </Target>
 
 </Project>

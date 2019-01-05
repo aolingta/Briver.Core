@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace BuildVersion
 {
-    class Program
+    internal class Program
     {
         /// <summary>
         /// 要输出的文件名
         /// </summary>
-        const string OutputFile = "InformationVersion.cs";
+        private const string OutputFile = "InformationVersion.cs";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace BuildVersion
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{nameof(BuildVersion)}: {ex.Message}");
+                Console.WriteLine($"{nameof(BuildVersion)}: {ex.ToString()}");
             }
 
         }
@@ -86,17 +86,6 @@ namespace BuildVersion
                     continue;
                 }
 
-                var file = Path.Combine(git, nameof(BuildVersion));
-                if (!File.Exists(file))
-                {
-                    File.WriteAllText(file, "请勿删除此文件");
-                    using (var writer = File.AppendText(Path.Combine(path, ".gitignore")))
-                    {
-                        writer.WriteLine();
-                        writer.WriteLine(OutputFile);
-                    }
-                }
-
                 var time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 var name = Exec("git", "symbolic-ref --short -q HEAD", path);
                 var hash = Exec("git", "rev-parse HEAD", path);
@@ -105,11 +94,55 @@ namespace BuildVersion
                 {
                     repo = path;
                 }
+                AmendRepository(path, git, hash);
+
                 return $"编译({time}) 分支({name}) 提交({hash}) 仓库({repo})";
             }
 
             throw new Exception($"未找到对应的git目录");
         }
 
+        private static void AmendRepository(string projectPath, string gitPath, string uniqueName)
+        {
+            using (var mutex = new Mutex(true, uniqueName, out var created))
+            {
+                // 如果创建新互斥体失败，说明已经存在同名互斥体，则等待互斥体可用
+                if (!created) { mutex.WaitOne(); }
+
+                try
+                {
+                    var file = Path.Combine(gitPath, nameof(BuildVersion));
+                    if (File.Exists(file)) { return; }
+
+                    File.WriteAllText(file, "请勿删除此文件");
+                    var ignore = Path.Combine(projectPath, ".gitignore");
+                    using (var stream = File.Open(ignore, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                    {
+                        var exist = false;
+                        var reader = new StreamReader(stream, Encoding.UTF8);
+                        while (!reader.EndOfStream)
+                        {
+                            var line = reader.ReadLine();
+                            if (string.Equals(line, OutputFile))
+                            {
+                                exist = true;
+                                break;
+                            }
+                        }
+                        if (exist) { return; }
+
+                        stream.Seek(0L, SeekOrigin.End);
+                        var writer = new StreamWriter(stream, Encoding.UTF8);
+                        writer.WriteLine();
+                        writer.WriteLine(OutputFile);
+                        writer.Flush();
+                    }
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
+                }
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,8 +38,8 @@
     <Folder Include="Http\" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).dll" />
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\BuildVersion.exe $(ProjectDir)" />
   </Target>
 
 </Project>

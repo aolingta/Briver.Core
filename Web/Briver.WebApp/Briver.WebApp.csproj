@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -22,8 +23,8 @@
     <ProjectReference Include="..\Briver.Web\Briver.Web.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).dll&#xD;&#xA;$(ProjectDir)..\..\PatchVersion.exe $(ProjectDir)$(OutputPath)$(AssemblyName).Views.dll" />
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\BuildVersion.exe $(ProjectDir)" />
   </Target>
 
 </Project>
