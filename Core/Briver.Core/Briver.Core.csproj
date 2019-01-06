@@ -14,7 +14,8 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <Company>chenyj</Company>
     <FileVersion>1.1.0</FileVersion>
-  <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute></PropertyGroup>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>

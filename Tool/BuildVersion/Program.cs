@@ -85,7 +85,7 @@ namespace BuildVersion
 
             AmendProjectCore(xml);
             xml.Add(new XAttribute(nameof(BuildVersion), $"{DateTime.Now:yyyy/MM/dd}"));
-            using (var writer = XmlWriter.Create(projectFile, new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true, IndentChars = " ", CheckCharacters = false }))
+            using (var writer = XmlWriter.Create(projectFile, new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true, CheckCharacters = false }))
             {
                 xml.Save(writer);
             }
