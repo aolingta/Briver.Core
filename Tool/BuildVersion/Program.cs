@@ -58,7 +58,7 @@ namespace BuildVersion
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{nameof(BuildVersion)}: {ex.Message}");
+                Console.WriteLine($"{nameof(BuildVersion)}: {ex.ToString()}");
                 Environment.Exit(1);
             }
 
@@ -107,7 +107,7 @@ namespace BuildVersion
             const string inforationVersionName = "GenerateAssemblyInformationalVersionAttribute";
             const string compileName = "Compile";
             const string compileIncludeName = "Include";
-            const string compileIncludeValue = "Properties\\InformationVersion.cs";
+            const string compileIncludeValue = @"Properties\InformationVersion.cs";
 
             var propertyGroup = xml.Element(ns + propertyGroupName);
             if (propertyGroup.Element(ns + inforationVersionName) == null)
@@ -118,7 +118,7 @@ namespace BuildVersion
             if (!isNewProjectFormat)
             {
                 var compileItem = xml.Descendants(ns + compileName)
-                    .FirstOrDefault(it => (string)it.Attribute(compileIncludeValue) == compileIncludeValue);
+                    .FirstOrDefault(it => (string)it.Attribute(compileIncludeName) == compileIncludeValue);
                 if (compileItem == null)
                 {
                     compileItem = new XElement(ns + compileName, new XAttribute(compileIncludeName, compileIncludeValue));
