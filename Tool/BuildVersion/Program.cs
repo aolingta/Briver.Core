@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace BuildVersion
@@ -32,14 +33,14 @@ namespace BuildVersion
                 {
                     throw new Exception($"指定的项目文件夹“{projectPath}”不存在");
                 }
+                var projectModified = TryAmendProject(projectPath, out var projectFile);
+                if (projectModified)
+                {
+                    throw new Exception($"项目文件“{projectFile}”已被修改，请重新执行编译操作");
+                }
+
                 var propertiesDir = Path.Combine(projectPath, "Properties");
                 Directory.CreateDirectory(propertiesDir);
-                var informationVersionFile = Path.Combine(propertiesDir, OutputFile);
-                if (!File.Exists(informationVersionFile)) //以前没有执行过
-                {
-                    AmendProjectFile(projectPath);
-                    AmendPropertyInfo(propertiesDir);
-                }
 
                 var information = BuildInformation(projectPath);
                 information = $"[assembly: System.Reflection.AssemblyInformationalVersion(\"{information}\")]";
@@ -50,108 +51,84 @@ namespace BuildVersion
                 using (var reader = new StreamReader(stream))
                 {
                     var readme = reader.ReadToEnd();
-                    File.WriteAllLines(informationVersionFile, new[] { readme, information });
+                    var file = Path.Combine(propertiesDir, OutputFile);
+                    File.WriteAllLines(file, new[] { readme, information });
                 }
-
-                var message = new StringBuilder()
-                    .AppendLine($"{nameof(BuildVersion)}: 成功更新文件“{informationVersionFile}”")
-                    .Append($"\t{information}");
-                Console.WriteLine(message.ToString());
+                Console.WriteLine($"{nameof(BuildVersion)}: 项目“{projectFile}”已重新生成“{OutputFile}”文件");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{nameof(BuildVersion)}: {ex.Message}");
+                Environment.Exit(1);
             }
 
         }
-        private static void AmendProjectFile(string path)
+
+        private static bool TryAmendProject(string projectPath, out string projectFile)
         {
-            var project = Directory.EnumerateFiles(path, "*.csproj").SingleOrDefault();
-            if (project == null)
+            var projects = Directory.GetFiles(projectPath, "*.csproj");
+            if (projects.Length == 0)
             {
-                throw new Exception();
+                throw new Exception($"文件夹“{projectPath}”下未找到项目文件");
             }
-            var xml = XElement.Load(project);
-            var sdk = xml.Attribute("Sdk");
-            var isNewProjectFormat = sdk != null;//新版本
+            else if (projects.Length > 1)
+            {
+                throw new Exception($"文件夹“{projectPath}”下找到多个项目文件");
+            }
+            projectFile = projects[0];
 
-            const string propertyGroupName = "PropertyGroup";
-            const string attributeElementName = "GenerateAssemblyInformationalVersionAttribute";
-            const string compileInclude = "Properties\\InformationVersion.cs";
+            var xml = XElement.Load(projectFile, LoadOptions.PreserveWhitespace);
+            if (xml.Attribute(nameof(BuildVersion)) != null)
+            {
+                return false;
+            }
 
+            AmendProjectCore(xml);
+            xml.Add(new XAttribute(nameof(BuildVersion), $"{DateTime.Now:yyyy/MM/dd}"));
+            using (var writer = XmlWriter.Create(projectFile, new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true, IndentChars = " ", CheckCharacters = false }))
+            {
+                xml.Save(writer);
+            }
+
+            return true;
+        }
+
+        private static void AmendProjectCore(XElement xml)
+        {
+            var isNewProjectFormat = xml.Attribute("Sdk") != null;
             XNamespace ns = XNamespace.None;
             if (!isNewProjectFormat)
             {
                 ns = "http://schemas.microsoft.com/developer/msbuild/2003";
             }
 
-            var propertyGroup = xml.Elements(ns + propertyGroupName)
-                .FirstOrDefault(it => it.Attribute("Condition") == null);
-            if (propertyGroup == null)
+            const string propertyGroupName = "PropertyGroup";
+            const string itemGroupName = "ItemGroup";
+            const string inforationVersionName = "GenerateAssemblyInformationalVersionAttribute";
+            const string compileName = "Compile";
+            const string compileIncludeName = "Include";
+            const string compileIncludeValue = "Properties\\InformationVersion.cs";
+
+            var propertyGroup = xml.Element(ns + propertyGroupName);
+            if (propertyGroup.Element(ns + inforationVersionName) == null)
             {
-                propertyGroup = new XElement(ns + propertyGroupName);
-                xml.Add(propertyGroup);
-                propertyGroup.Add(new XElement(ns + attributeElementName, false));
-            }
-            else
-            {
-                var element = propertyGroup.Element(ns + attributeElementName);
-                if (element != null)
-                {
-                    element.SetValue(false);
-                }
-                else
-                {
-                    propertyGroup.Add(new XElement(ns + attributeElementName, false));
-                }
+                propertyGroup.Add(new XElement(ns + inforationVersionName, false));
             }
 
             if (!isNewProjectFormat)
             {
-                var informationCompile = xml.Descendants(ns + "Compile")
-                    .FirstOrDefault(it => (string)it.Attribute("Include") == compileInclude);
-                if (informationCompile == null)
+                var compileItem = xml.Descendants(ns + compileName)
+                    .FirstOrDefault(it => (string)it.Attribute(compileIncludeValue) == compileIncludeValue);
+                if (compileItem == null)
                 {
-                    var itemGroup = xml.Elements(ns + "ItemGroup").FirstOrDefault(it => it.Attribute("Condition") == null);
-                    if (itemGroup == null)
-                    {
-                        itemGroup = propertyGroup;
-                    }
-                    itemGroup.AddAfterSelf(
-                        new XElement(ns + "ItemGroup",
-                            new XElement(ns + "Compile",
-                                new XAttribute("Include", compileInclude))));
-                }
-            }
+                    compileItem = new XElement(ns + compileName, new XAttribute(compileIncludeName, compileIncludeValue));
+                    var itemGroup = new XElement(ns + itemGroupName, compileItem);
 
-
-            xml.Save(project);
-        }
-
-        private static void AmendPropertyInfo(string propertiesDir)
-        {
-            var assemblyInfoFile = Path.Combine(propertiesDir, "AssemblyInfo.cs");
-            if (File.Exists(assemblyInfoFile))
-            {
-                var needRewrite = false;
-                var assemblyInfo = new StringBuilder();
-                foreach (var item in File.ReadAllLines(assemblyInfoFile))
-                {
-                    var line = item;
-                    if (line.Contains("AssemblyInformationalVersion"))
-                    {
-                        line = "//" + line;
-                        needRewrite = true;
-                    }
-                    assemblyInfo.AppendLine(line);
-                }
-                if (needRewrite)
-                {
-                    File.WriteAllText(assemblyInfoFile, assemblyInfo.ToString());
+                    var previousGroup = xml.Element(ns + itemGroupName) ?? propertyGroup;
+                    previousGroup.AddAfterSelf(itemGroup);
                 }
             }
         }
-
 
         private static string Exec(string command, string arguments, string directory)
         {
@@ -186,7 +163,7 @@ namespace BuildVersion
                 var repo = Exec("git", "remote get-url --all origin", path);
                 if (string.IsNullOrEmpty(repo))
                 {
-                    repo = path;
+                    repo = path.Replace(@"\", @"\\");
                 }
                 AmendRepository(path, git, hash);
 

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" BuildVersion="2019/01/06">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -14,8 +14,7 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <Company>chenyj</Company>
     <FileVersion>1.1.0</FileVersion>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-  </PropertyGroup>
+  <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute></PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
