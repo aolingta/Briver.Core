@@ -1,0 +1,25 @@
+﻿<Project InitalTargets="Briver">
+
+  <PropertyGroup>
+    <InformationVersionFile>Properties\InformationVersion.cs</InformationVersionFile>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="$(InformationVersionFile)" />
+    <Compile Include="$(InformationVersionFile)" />
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <TasksLibraryFolder>$(MSBuildThisFileDirectory)..\tasks\netstandard2.0</TasksLibraryFolder>
+  </PropertyGroup>
+
+  <UsingTask TaskName="Briver.ProjectTasks.InformationVersionTask" AssemblyFile="$(TasksLibraryFolder)\Briver.ProjectTasks.dll" />
+
+  <Target Name="Briver" AfterTargets="CoreCompile">
+
+    <InformationVersionTask ProjectDir="$(ProjectDir)" />
+
+  </Target>
+
+</Project>

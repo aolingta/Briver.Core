@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" BuildVersion="2019/01/06">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -36,9 +36,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\BuildVersion.exe $(ProjectDir)" />
-  </Target>
 
 </Project>

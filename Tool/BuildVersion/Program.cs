@@ -18,7 +18,7 @@ namespace BuildVersion
         /// <summary>
         /// 要输出的文件名
         /// </summary>
-        private const string OutputFile = "InformationVersion.cs";
+        private const string FileName = "InformationVersion.cs";
 
         private static void Main(string[] args)
         {
@@ -51,10 +51,10 @@ namespace BuildVersion
                 using (var reader = new StreamReader(stream))
                 {
                     var readme = reader.ReadToEnd();
-                    var file = Path.Combine(propertiesDir, OutputFile);
+                    var file = Path.Combine(propertiesDir, FileName);
                     File.WriteAllLines(file, new[] { readme, information });
                 }
-                Console.WriteLine($"{nameof(BuildVersion)}: 项目“{projectFile}”已重新生成“{OutputFile}”文件");
+                Console.WriteLine($"{nameof(BuildVersion)}: 项目“{projectFile}”已重新生成“{FileName}”文件");
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace BuildVersion
             }
             projectFile = projects[0];
 
-            var xml = XElement.Load(projectFile, LoadOptions.PreserveWhitespace);
+            var xml = XElement.Load(projectFile);
             if (xml.Attribute(nameof(BuildVersion)) != null)
             {
                 return false;
@@ -189,22 +189,25 @@ namespace BuildVersion
 
                     // 在.gitignore文件中添加“InformationVersion.cs”
                     var ignore = Path.Combine(projectDir, ".gitignore");
-                    using (var stream = File.Open(ignore, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                    {
-                        var reader = new StreamReader(stream, Encoding.UTF8);
-                        while (!reader.EndOfStream)
-                        {
-                            if (string.Equals(reader.ReadLine(), OutputFile))
-                            {
-                                return;
-                            }
-                        }
 
-                        stream.Seek(0L, SeekOrigin.End);
-                        var writer = new StreamWriter(stream, Encoding.UTF8);
-                        writer.WriteLine();
-                        writer.WriteLine(OutputFile);
-                        writer.Flush();
+                    var needRewrite = true;
+                        var builder = new StringBuilder();
+                    if (File.Exists(ignore))
+                    {
+                        foreach (var line in File.ReadAllLines(ignore))
+                        {
+                            if (string.Equals(line, FileName))
+                            {
+                                needRewrite = false;
+                                break;
+                            }
+                            builder.AppendLine(line);
+                        }
+                    }
+                    if (needRewrite)
+                    {
+                        builder.AppendLine().AppendLine(FileName);
+                        File.WriteAllText(ignore, builder.ToString());
                     }
                 }
                 finally

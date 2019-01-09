@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9.Tool", "9.Tool", "{C7169B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildVersion", "Tool\BuildVersion\BuildVersion.csproj", "{241F4746-AF34-48F0-A939-DFEF2A9F1EB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Briver.ProjectTasks", "Tool\Briver.ProjectTasks\Briver.ProjectTasks.csproj", "{DF975184-EBEE-440E-A5E2-84ECEA22072F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{241F4746-AF34-48F0-A939-DFEF2A9F1EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{241F4746-AF34-48F0-A939-DFEF2A9F1EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{241F4746-AF34-48F0-A939-DFEF2A9F1EB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF975184-EBEE-440E-A5E2-84ECEA22072F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF975184-EBEE-440E-A5E2-84ECEA22072F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF975184-EBEE-440E-A5E2-84ECEA22072F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF975184-EBEE-440E-A5E2-84ECEA22072F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{5BCDB262-09F3-4D0B-9377-B0F15AC09EBF} = {A0DFFFD5-DF97-427A-BB37-DD36A44401D0}
 		{D55BA854-BF5F-4924-9A97-DF373685C547} = {D79D4202-49E2-4AE4-9D90-CE4D2A902EBD}
 		{241F4746-AF34-48F0-A939-DFEF2A9F1EB0} = {C7169B2E-6FD6-4D66-9131-8460D585CF58}
+		{DF975184-EBEE-440E-A5E2-84ECEA22072F} = {C7169B2E-6FD6-4D66-9131-8460D585CF58}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA094A05-FDA3-431D-BF7D-F7AB8A0D27B0}
