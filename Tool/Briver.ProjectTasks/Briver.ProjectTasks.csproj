@@ -12,7 +12,7 @@
     <Description>将编译时的GIT版本信息写入程序集文件</Description>
     <Authors>陈勇江</Authors>
     <Company>Briver</Company>
-    <Version>1.1</Version>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

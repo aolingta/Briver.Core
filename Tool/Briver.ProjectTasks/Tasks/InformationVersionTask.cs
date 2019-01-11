@@ -61,6 +61,7 @@ namespace Briver.ProjectTasks
                     continue;
                 }
 
+                var time = DateTime.Now.ToString("yyyy/MM/dd");
                 var name = Command.Execute("git", "symbolic-ref --short -q HEAD", repository);
                 var hash = Command.Execute("git", "rev-parse HEAD", repository);
                 var addr = Command.Execute("git", "remote get-url --all origin", repository);
@@ -70,7 +71,7 @@ namespace Briver.ProjectTasks
                 }
                 AmendRepository(repository, hash);
 
-                return $"分支({name}) 提交({hash}) 仓库({addr})";
+                return $"编译({time}) 分支({name}) 提交({hash}) 仓库({addr})";
             }
 
             throw new Exception($"未找到.git目录，无法生成版本信息");
