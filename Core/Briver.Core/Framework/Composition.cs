@@ -26,6 +26,11 @@ namespace Briver.Framework
         int Priority { get; }
 
         /// <summary>
+        /// 显示名称
+        /// </summary>
+        string DisplayName { get; }
+
+        /// <summary>
         /// 说明
         /// </summary>
         string Description { get; }
@@ -41,6 +46,11 @@ namespace Briver.Framework
         /// 优先级
         /// </summary>
         public int Priority { get; set; }
+
+        /// <summary>
+        /// 显示名称
+        /// </summary>
+        public string DisplayName { get; set; }
 
         /// <summary>
         /// 说明

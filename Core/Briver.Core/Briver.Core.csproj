@@ -8,12 +8,12 @@
     <Copyright>Copyright © Chenyj 2018</Copyright>
     <Description>面向.NetStandard的应用框架</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.0</Version>
-    <PackageId>Briver.Core.netstandard</PackageId>
+    <Version>1.1.1</Version>
+    <PackageId>Briver.netstandard</PackageId>
     <PackageProjectUrl>https://github.com/chenyj796/Briver.NetCore</PackageProjectUrl>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <Company>chenyj</Company>
-    <FileVersion>1.1.0</FileVersion>
+    <FileVersion>1.1.1</FileVersion>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Briver.ProjectTasks" Version="1.1.0">
+    <PackageReference Include="Briver.ProjectTasks" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

@@ -11,16 +11,23 @@ namespace Briver.Framework
     /// </summary>
     public static partial class Extensions
     {
-        private class DefaultCompositionMetadata : ICompositionMetadata
+        private class CompositionMetadata : ICompositionMetadata
         {
-            public static readonly Lazy<ICompositionMetadata> Instance = new Lazy<ICompositionMetadata>(() => new DefaultCompositionMetadata());
+            public static CompositionMetadata Empty = new CompositionMetadata(null);
+
+            public CompositionMetadata(object target)
+            {
+                this.DisplayName = target?.GetType().Name ?? string.Empty;
+            }
 
             public int Priority => 0;
 
             public string Description => string.Empty;
+
+            public string DisplayName { get; }
         }
 
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, ICompositionMetadata> _metadatas = new ConcurrentDictionary<RuntimeTypeHandle, ICompositionMetadata>();
+        private static readonly ConcurrentDictionary<Type, ICompositionMetadata> _metadatas = new ConcurrentDictionary<Type, ICompositionMetadata>();
 
         /// <summary>
         /// 获取组件的元数据
@@ -29,9 +36,17 @@ namespace Briver.Framework
         /// <returns></returns>
         public static ICompositionMetadata GetCompositionMetadata(this IComposition @this)
         {
-            if (@this == null) { return DefaultCompositionMetadata.Instance.Value; }
-            return _metadatas.GetOrAdd(@this.GetType().TypeHandle,
-                handle => Type.GetTypeFromHandle(handle).GetCustomAttribute<CompositionAttribute>(false) ?? DefaultCompositionMetadata.Instance.Value);
+            if (@this == null)
+            {
+                return CompositionMetadata.Empty;
+            }
+
+            return _metadatas.GetOrAdd(@this.GetType(), type =>
+            {
+                ICompositionMetadata metadata = type.GetCustomAttribute<CompositionAttribute>(false);
+                return metadata ?? new CompositionMetadata(@this);
+            });
+
         }
     }
 }
