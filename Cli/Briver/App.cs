@@ -14,18 +14,19 @@ namespace Briver
 {
     internal class App : Application
     {
+        private const string RootConfig = "Briver.json";
+
         /// <summary>
         /// 通过读取文件加载信息
         /// </summary>
         /// <returns></returns>
         protected override Information LoadInformation()
         {
-            var information_file = "Briver.json";
             string BuildErrorText()
             {
-                return $"运行目录“{this.BaseDirectory}”下不存在文件“{information_file}”或者此文件不是有效的json格式，请确保此文件存在并且使用{Encoding.UTF8.EncodingName}编码。";
+                return $"运行目录“{this.BaseDirectory}”下不存在文件“{RootConfig}”或者此文件不是有效的json格式，请确保此文件存在并且使用{Encoding.UTF8.EncodingName}编码。";
             }
-            var path = Path.Combine(this.BaseDirectory, information_file);
+            var path = Path.Combine(this.BaseDirectory, RootConfig);
             if (!File.Exists(path))
             {
                 throw new FrameworkException(ExceptionLevel.Fatal, BuildErrorText());
@@ -70,7 +71,7 @@ namespace Briver
 
     }
 
-    [Composition(Priority = 1, Description = "记录系统启动的日志")]
+    [Composition(Priority = 1, DisplayName = "系统初始化器")]
     internal class AppInitiator : ISystemInitialization
     {
         void ISystemInitialization.Execute()

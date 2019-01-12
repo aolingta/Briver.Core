@@ -42,21 +42,25 @@ namespace Briver.Framework
 
             internal Information ValidateProperties()
             {
+                void ThrowException(string message)
+                {
+                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，{message}");
+                }
                 if (string.IsNullOrWhiteSpace(this.Name))
                 {
-                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(Name)}”为空");
+                    ThrowException($"属性“{nameof(Name)}”为空");
                 }
                 if (string.IsNullOrWhiteSpace(this.Version))
                 {
-                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(Version)}”为空");
+                    ThrowException($"属性“{nameof(Version)}”为空");
                 }
                 if (!System.Version.TryParse(this.Version, out var version))
                 {
-                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(Version)}”不是有效的System.Version");
+                    ThrowException($"属性“{nameof(Version)}”不是有效的{typeof(Version).FullName}对象");
                 }
                 if (string.IsNullOrWhiteSpace(this.DisplayName))
                 {
-                    throw new FrameworkException(ExceptionLevel.Fatal, $"验证“{nameof(Information)}失败，属性“{nameof(DisplayName)}”为空");
+                    ThrowException($"属性“{nameof(DisplayName)}”为空");
                 }
 
                 return this;

@@ -14,6 +14,7 @@ namespace Briver.Logging
             foreach (var entry in entries)
             {
                 var writer = new StringBuilder();
+                writer.AppendLine();
                 writer.AppendLine($"时间：{entry.Time:HH:mm:ss.fff}");
                 writer.AppendLine($"级别：{entry.Level}");
                 writer.AppendLine($"位置：{entry.FilePath}@{entry.MemberName}#{entry.LineNumber}");
@@ -22,6 +23,7 @@ namespace Briver.Logging
                 {
                     writer.AppendLine(entry.Content);
                 }
+                writer.AppendLine();
                 Debug.Write(writer.ToString());
             }
         }
