@@ -24,13 +24,25 @@ namespace Briver
             {
                 var app = new App();
                 SystemContext.Initialize(app);
-                Console.WriteLine($"{app.Name} {app.Version}");
-                app.Aspect().Execute(args);
+                try
+                {
+                    Console.WriteLine($"{app.Name} {app.Version}");
+                    for (int i = 0; i < 5; i++)
+                    {
+                        app.Aspect().Execute(args);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("发生了异常", ex.ToString());
+                    throw;
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+
         }
     }
 

@@ -1,15 +1,16 @@
-﻿using Briver.Framework;
-using Briver.Logging;
-using Briver.Runtime;
-using Microsoft.Extensions.CommandLineUtils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Diagnostics;
 using System.IO.Pipelines;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Briver.Framework;
+using Briver.Logging;
+using Briver.Runtime;
+using Microsoft.Extensions.CommandLineUtils;
 
 namespace Briver.Commands
 {
@@ -41,11 +42,17 @@ namespace Briver.Commands
 
         public override Type Parent => typeof(TestCommand);
 
-        private EventBus.SubscriptionToken _token;
-
+        private readonly EventBus.SubscriptionToken _token;
+        private int _count = 0;
         public EventCommand()
         {
-            _token = EventBus.Subscribe<TestEventArgs>((o, e) => { });
+            _token = EventBus.Subscribe<TestEventArgs>((o, e) =>
+            {
+                if (Interlocked.Increment(ref _count) % 1000000 == 0)
+                {
+                    Logger.Debug($"收到{_count}条消息");
+                }
+            });
         }
 
         private CommandOption _times;
@@ -62,6 +69,7 @@ namespace Briver.Commands
             }
 
             var watch = Stopwatch.StartNew();
+            Logger.Debug("开始发送消息");
             Parallel.For(0, times, ii =>
             {
                 EventBus.Publish(null, new TestEventArgs());
@@ -70,7 +78,7 @@ namespace Briver.Commands
             var message = $"处理{times}次消息，用时{watch.Elapsed.TotalMilliseconds}毫秒";
             Console.WriteLine(message);
             Logger.Warn(message);
-            EventBus.Unsubscribe(_token);
+            //EventBus.Unsubscribe(_token);
             return 0;
         }
     }
