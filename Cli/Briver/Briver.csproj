@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Briver.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Briver.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
