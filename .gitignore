@@ -265,3 +265,4 @@ __pycache__/
 launchSettings.json
 
 InformationVersion.cs
+*.xml
