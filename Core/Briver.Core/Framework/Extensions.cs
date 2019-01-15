@@ -13,18 +13,28 @@ namespace Briver.Framework
     {
         private class CompositionMetadata : ICompositionMetadata
         {
-            public static CompositionMetadata Empty = new CompositionMetadata(null);
+            public static readonly CompositionMetadata Empty = new CompositionMetadata(null, 0, null, null);
 
-            public CompositionMetadata(object target)
+            public CompositionMetadata(string name, int priority, string displayName, string description)
             {
-                this.DisplayName = target?.GetType().Name ?? string.Empty;
+                this.Name = name ?? string.Empty;
+                this.Priority = priority;
+                this.DisplayName = displayName ?? string.Empty;
+                this.Description = description ?? string.Empty;
             }
 
-            public int Priority => 0;
+            public CompositionMetadata(Type type, CompositionAttribute attribute)
+            {
+                this.Name = attribute.Name ?? type.Name;
+                this.Priority = attribute.Priority;
+                this.DisplayName = attribute.DisplayName ?? this.Name;
+                this.Description = attribute.Description ?? string.Empty;
+            }
 
-            public string Description => string.Empty;
-
+            public string Name { get; }
+            public int Priority { get; }
             public string DisplayName { get; }
+            public string Description { get; }
         }
 
         private static readonly ConcurrentDictionary<Type, ICompositionMetadata> _metadatas = new ConcurrentDictionary<Type, ICompositionMetadata>();
@@ -43,8 +53,13 @@ namespace Briver.Framework
 
             return _metadatas.GetOrAdd(@this.GetType(), type =>
             {
-                ICompositionMetadata metadata = type.GetCustomAttribute<CompositionAttribute>(false);
-                return metadata ?? new CompositionMetadata(@this);
+                var attribute = type.GetCustomAttribute<CompositionAttribute>(false);
+                if (attribute != null)
+                {
+                    return new CompositionMetadata(type, attribute);
+                }
+
+                return new CompositionMetadata(type.Name, 0, type.Name, string.Empty);
             });
 
         }

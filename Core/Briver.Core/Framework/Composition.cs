@@ -26,6 +26,11 @@ namespace Briver.Framework
         int Priority { get; }
 
         /// <summary>
+        /// 名称
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// 显示名称
         /// </summary>
         string DisplayName { get; }
@@ -43,6 +48,11 @@ namespace Briver.Framework
     public sealed class CompositionAttribute : Attribute, ICompositionMetadata
     {
         /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// 优先级
         /// </summary>
         public int Priority { get; set; }
@@ -56,6 +66,7 @@ namespace Briver.Framework
         /// 说明
         /// </summary>
         public string Description { get; set; }
+
     }
 
     /// <summary>
