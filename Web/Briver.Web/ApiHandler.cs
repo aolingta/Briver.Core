@@ -68,7 +68,7 @@ namespace Briver.Web
     /// API处理器
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public interface IApiHanlder : IComposition
+    public interface IApiHandler : IComposition
     {
         Task<ApiResult> ProcessAsync(ApiContext context);
     }
@@ -76,15 +76,15 @@ namespace Briver.Web
     /// <summary>
     /// API处理器
     /// </summary>
-    public abstract class ApiHandler : IApiHanlder
+    public abstract class ApiHandler : IApiHandler
     {
-        private static readonly Lazy<IReadOnlyDictionary<string, IApiHanlder>> _handlers
-            = new Lazy<IReadOnlyDictionary<string, IApiHanlder>>(() =>
+        private static readonly Lazy<IReadOnlyDictionary<string, IApiHandler>> _handlers
+            = new Lazy<IReadOnlyDictionary<string, IApiHandler>>(() =>
             {
                 var suffix = "handler";
                 var suffixLength = suffix.Length;
-                var dict = new Dictionary<string, IApiHanlder>();
-                foreach (var handler in SystemContext.GetExports<IApiHanlder>())
+                var dict = new Dictionary<string, IApiHandler>();
+                foreach (var handler in SystemContext.GetExports<IApiHandler>())
                 {
                     var name = handler.GetCompositionMetadata().Name.ToLower();
                     dict.Add(name, handler);
@@ -95,13 +95,13 @@ namespace Briver.Web
                         dict.Add(name, handler);
                     }
                 }
-                return new ReadOnlyDictionary<string, IApiHanlder>(dict);
+                return new ReadOnlyDictionary<string, IApiHandler>(dict);
             });
 
         /// <summary>
         /// 所有的API处理器
         /// </summary>
-        public static bool TryGet(string name, out IApiHanlder hanlder)
+        public static bool TryGet(string name, out IApiHandler hanlder)
         {
             return _handlers.Value.TryGetValue(name.ToLower(), out hanlder);
         }
