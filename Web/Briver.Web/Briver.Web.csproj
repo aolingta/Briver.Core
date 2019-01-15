@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Briver.Core\Briver.Core.csproj" />
+  </ItemGroup>
+
 </Project>

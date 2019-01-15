@@ -4,6 +4,16 @@
         <name>Briver.WebApp</name>
     </assembly>
     <members>
+        <member name="T:Briver.WebApp.Api.Handlers.UserHandler">
+            <summary>
+            用户控制器
+            </summary>
+        </member>
+        <member name="T:Briver.WebApp.Api.Handlers.UserRepository">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Briver.WebApp.Api.Controllers.UserController">
             <summary>
             用户控制器
@@ -20,11 +30,6 @@
             查询状态
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:Briver.WebApp.Api.Controllers.UserRepository">
-            <summary>
-            
-            </summary>
         </member>
     </members>
 </doc>
