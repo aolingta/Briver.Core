@@ -4,6 +4,20 @@
         <name>Briver.WebApp</name>
     </assembly>
     <members>
+        <member name="T:Briver.WebApp.Api.ApiController">
+            <summary>
+            通用的API入口
+            </summary>
+        </member>
+        <member name="M:Briver.WebApp.Api.ApiController.InvokeAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            异步调用指定的API处理器
+            </summary>
+            <param name="apiName">API名称</param>
+            <param name="pageSize">数据分页大小</param>
+            <param name="pageIndex">数据分页编号</param>
+            <returns></returns>
+        </member>
         <member name="T:Briver.WebApp.Api.Handlers.UserHandler">
             <summary>
             用户控制器

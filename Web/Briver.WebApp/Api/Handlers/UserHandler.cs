@@ -24,7 +24,7 @@ namespace Briver.WebApp.Api.Handlers
             var repository = new UserRepository();
             return Task.FromResult(new ApiResult(true)
             {
-                Content = repository.Aspect().GetUsers()
+                Content = repository.Aspect().GetUsers(context.PageIndex, context.PageSize)
             });
         }
     }
@@ -35,9 +35,14 @@ namespace Briver.WebApp.Api.Handlers
     [Log(Priority = 1)]
     public class UserRepository
     {
-        public UserModel[] GetUsers()
+        public IEnumerable<UserModel> GetUsers(int start, int count)
         {
-            return new UserModel[] { new UserModel { Name = "chenyj", Time = DateTime.Now } };
+            return Enumerable.Range(0, count).Select(index => new UserModel
+            {
+                Id = count * start + index,
+                Name = "chenyj",
+                Time = DateTime.Now
+            });
         }
 
     }
