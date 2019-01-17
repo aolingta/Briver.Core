@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 
 namespace Briver.Logging
 {
-    class DebugLogWriter : ILogWriter
+    internal class DebugLogWriter : ILogWriter
     {
         public void Write(IReadOnlyCollection<LogEntry> entries)
         {
-            if (!Debugger.IsAttached) return;
+            if (!Debugger.IsAttached)
+            {
+                return;
+            }
 
             foreach (var entry in entries)
             {
-                var writer = new StringBuilder();
-                writer.AppendLine();
-                writer.AppendLine($"时间：{entry.Time:HH:mm:ss.fff}");
-                writer.AppendLine($"级别：{entry.Level}");
-                writer.AppendLine($"位置：{entry.FilePath}@{entry.MemberName}#{entry.LineNumber}");
-                writer.AppendLine($"消息：{entry.Message}");
-                if (!string.IsNullOrEmpty(entry.Content))
+                using (var writer = new StringWriter())
                 {
-                    writer.AppendLine(entry.Content);
+                    writer.WriteLine();
+                    entry.Output(writer);
+                    writer.WriteLine();
+                    Debug.Write(writer.ToString());
                 }
-                writer.AppendLine();
-                Debug.Write(writer.ToString());
             }
         }
     }

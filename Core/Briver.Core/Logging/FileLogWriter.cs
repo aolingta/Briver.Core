@@ -53,14 +53,7 @@ namespace Briver.Logging
                 {
                     foreach (var entry in group)
                     {
-                        writer.WriteLine($"时间：{entry.Time:HH:mm:ss.fff}");
-                        writer.WriteLine($"级别：{entry.Level}");
-                        writer.WriteLine($"位置：{entry.FilePath}@{entry.MemberName}#{entry.LineNumber}");
-                        writer.WriteLine($"消息：{entry.Message}");
-                        if (!string.IsNullOrEmpty(entry.Content))
-                        {
-                            writer.WriteLine(entry.Content);
-                        }
+                        entry.Output(writer);
                         writer.WriteLine();
                     }
                     writer.Flush();

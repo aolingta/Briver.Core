@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 
 namespace Briver.Logging
 {
@@ -51,6 +53,33 @@ namespace Briver.Logging
             this.FilePath = filePath;
             this.MemberName = memberName;
             this.LineNumber = lineNumber;
+        }
+
+        /// <summary>
+        /// 输出到文本流
+        /// </summary>
+        /// <param name="writer">文本流</param>
+        public void Output(TextWriter writer)
+        {
+            if (writer == null) { return; }
+
+            writer.WriteLine($"时间：{this.Time:HH:mm:ss.fff}");
+            writer.WriteLine($"级别：{this.Level}");
+            writer.WriteLine($"位置：{this.FilePath}@{this.MemberName}#{this.LineNumber}");
+            writer.WriteLine($"消息：{this.Message}");
+            if (!string.IsNullOrEmpty(this.Content))
+            {
+                writer.WriteLine(this.Content);
+            }
+        }
+
+        public override string ToString()
+        {
+            using (var writer = new StringWriter())
+            {
+                this.Output(writer);
+                return writer.ToString();
+            }
         }
     }
 }
