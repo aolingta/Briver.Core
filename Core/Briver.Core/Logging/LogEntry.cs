@@ -71,6 +71,7 @@ namespace Briver.Logging
             {
                 writer.WriteLine(this.Content);
             }
+            writer.WriteLine();
         }
 
         public override string ToString()

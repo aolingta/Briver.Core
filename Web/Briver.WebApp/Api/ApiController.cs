@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Briver.Framework;
+using Briver.Logging;
 using Briver.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,7 @@ namespace Briver.WebApp.Api
         public async Task<IActionResult> InvokeAsync(string apiName,
             int pageSize = 50, int pageIndex = 0)
         {
+            Logger.Info($"收到请求{Request.Path}");
             if (ApiHandler.TryGet(apiName, out var handler))
             {
                 var context = new ApiContext(Request)

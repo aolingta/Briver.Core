@@ -10,19 +10,15 @@ namespace Briver.Logging
     {
         public void Write(IReadOnlyCollection<LogEntry> entries)
         {
-            if (!Debugger.IsAttached)
+            if (Debugger.IsAttached)
             {
-                return;
-            }
-
-            foreach (var entry in entries)
-            {
-                using (var writer = new StringWriter())
+                foreach (var entry in entries)
                 {
-                    writer.WriteLine();
-                    entry.Output(writer);
-                    writer.WriteLine();
-                    Debug.Write(writer.ToString());
+                    using (var writer = new StringWriter())
+                    {
+                        entry.Output(writer);
+                        Trace.Write(writer.ToString());
+                    }
                 }
             }
         }
