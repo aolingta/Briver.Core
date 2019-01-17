@@ -12,13 +12,14 @@ namespace Briver.Logging
         {
             if (Debugger.IsAttached)
             {
-                foreach (var entry in entries)
+                using (var writer = new StringWriter())
                 {
-                    using (var writer = new StringWriter())
+                    foreach (var entry in entries)
                     {
                         entry.Output(writer);
-                        Trace.Write(writer.ToString());
+                        writer.WriteLine();
                     }
+                    Trace.Write(writer.ToString());
                 }
             }
         }

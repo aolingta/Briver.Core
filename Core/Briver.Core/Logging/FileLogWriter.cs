@@ -54,6 +54,7 @@ namespace Briver.Logging
                     foreach (var entry in group)
                     {
                         entry.Output(writer);
+                        writer.WriteLine();
                     }
                     writer.Flush();
                 }
