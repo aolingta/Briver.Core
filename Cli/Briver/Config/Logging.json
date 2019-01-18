@@ -1,6 +1,5 @@
 {
   "Logger": {
-    "Enabled": true,
     "MinLevel": "Trace"
   },
   "FileLogWriter": {

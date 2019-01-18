@@ -110,6 +110,10 @@ namespace Briver.Framework
             _information = new Lazy<Information>(() => this.LoadInformation().ValidateProperties());
         }
 
+        /// <summary>
+        /// 加载基本信息
+        /// </summary>
+        /// <returns></returns>
         protected abstract Information LoadInformation();
 
         /// <summary>
@@ -118,13 +122,25 @@ namespace Briver.Framework
         /// <param name="config"></param>
         protected internal virtual void Configure(ConfigurationBuilder config)
         {
-            var dir = Path.Combine(this.UserDirectory, "Config");
-            if (Directory.Exists(dir))
+            void LoadConfig(string dir)
             {
-                foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
+                if (Directory.Exists(dir))
                 {
-                    config.AddJsonFile(file, false, true);
+                    foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
+                    {
+                        config.AddJsonFile(file, false, true);
+                    }
                 }
+            }
+
+            const string ConfigDir = "Config";
+            var baseConfig = Path.GetFullPath(Path.Combine(this.BaseDirectory, ConfigDir));
+            var userConfig = Path.GetFullPath(Path.Combine(this.UserDirectory, ConfigDir));
+
+            LoadConfig(baseConfig);
+            if (!string.Equals(baseConfig, userConfig, StringComparison.OrdinalIgnoreCase))
+            {
+                LoadConfig(userConfig);
             }
         }
 
