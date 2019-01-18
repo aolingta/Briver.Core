@@ -1,10 +1,10 @@
-﻿using Briver.Framework;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Briver.Framework;
+using Microsoft.Extensions.Configuration;
 
 namespace Briver.Logging
 {
@@ -13,7 +13,7 @@ namespace Briver.Logging
     /// </summary>
     public static class Logger
     {
-        class Config
+        private class Config
         {
             public LogLevel MinLevel { get; set; }
         }
@@ -106,6 +106,24 @@ namespace Briver.Logging
         /// <summary>
         /// 记录错误级别的日志
         /// </summary>
+        /// <param name="level">级别</param>
+        /// <param name="message">消息</param>
+        /// <param name="content">详细内容</param>
+        /// <param name="filePath">源码的文件路径（由编译器自动填充，请勿手工赋值）</param>
+        /// <param name="memberName">源码的成员名称（由编译器自动填充，请勿手工赋值）</param>
+        /// <param name="lineNumber">源码的行号（由编译器自动填充，请勿手工赋值）</param>
+        public static void Append(LogLevel level, string message, string content = null, [CallerFilePath]string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber]int? lineNumber = null)
+        {
+            if (Adopt(level))
+            {
+                _entries.Add(new LogEntry(level, message, content, filePath, memberName, lineNumber));
+            }
+        }
+
+
+        /// <summary>
+        /// 记录错误级别的日志
+        /// </summary>
         /// <param name="message">消息</param>
         /// <param name="content">详细内容</param>
         /// <param name="filePath">源码的文件路径（由编译器自动填充，请勿手工赋值）</param>
@@ -113,10 +131,7 @@ namespace Briver.Logging
         /// <param name="lineNumber">源码的行号（由编译器自动填充，请勿手工赋值）</param>
         public static void Fatal(string message, string content = null, [CallerFilePath]string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber]int? lineNumber = null)
         {
-            if (Adopt(LogLevel.Fatal))
-            {
-                _entries.Add(new LogEntry(LogLevel.Fatal, message, content, filePath, memberName, lineNumber));
-            }
+            Append(LogLevel.Fatal, message, content, filePath, memberName, lineNumber);
         }
 
         /// <summary>
@@ -129,10 +144,7 @@ namespace Briver.Logging
         /// <param name="lineNumber">源码的行号（由编译器自动填充，请勿手工赋值）</param>
         public static void Error(string message, string content = null, [CallerFilePath]string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber]int? lineNumber = null)
         {
-            if (Adopt(LogLevel.Error))
-            {
-                _entries.Add(new LogEntry(LogLevel.Error, message, content, filePath, memberName, lineNumber));
-            }
+            Append(LogLevel.Error, message, content, filePath, memberName, lineNumber);
         }
 
         /// <summary>
@@ -145,10 +157,7 @@ namespace Briver.Logging
         /// <param name="lineNumber">源码的行号（由编译器自动填充，请勿手工赋值）</param>
         public static void Warn(string message, string content = null, [CallerFilePath]string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber]int? lineNumber = null)
         {
-            if (Adopt(LogLevel.Warn))
-            {
-                _entries.Add(new LogEntry(LogLevel.Warn, message, content, filePath, memberName, lineNumber));
-            }
+            Append(LogLevel.Warn, message, content, filePath, memberName, lineNumber);
         }
 
         /// <summary>
@@ -161,10 +170,7 @@ namespace Briver.Logging
         /// <param name="lineNumber">源码的行号（由编译器自动填充，请勿手工赋值）</param>
         public static void Info(string message, string content = null, [CallerFilePath]string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber]int? lineNumber = null)
         {
-            if (Adopt(LogLevel.Info))
-            {
-                _entries.Add(new LogEntry(LogLevel.Info, message, content, filePath, memberName, lineNumber));
-            }
+            Append(LogLevel.Info, message, content, filePath, memberName, lineNumber);
         }
 
         /// <summary>
@@ -177,10 +183,7 @@ namespace Briver.Logging
         /// <param name="lineNumber">源码的行号（由编译器自动填充，请勿手工赋值）</param>
         public static void Debug(string message, string content = null, [CallerFilePath]string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber]int? lineNumber = null)
         {
-            if (Adopt(LogLevel.Debug))
-            {
-                _entries.Add(new LogEntry(LogLevel.Debug, message, content, filePath, memberName, lineNumber));
-            }
+            Append(LogLevel.Debug, message, content, filePath, memberName, lineNumber);
         }
 
         /// <summary>
@@ -193,10 +196,7 @@ namespace Briver.Logging
         /// <param name="lineNumber">源码的行号（由编译器自动填充，请勿手工赋值）</param>
         public static void Trace(string message, string content = null, [CallerFilePath]string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber]int? lineNumber = null)
         {
-            if (Adopt(LogLevel.Trace))
-            {
-                _entries.Add(new LogEntry(LogLevel.Trace, message, content, filePath, memberName, lineNumber));
-            }
+            Append(LogLevel.Trace, message, content, filePath, memberName, lineNumber);
         }
 
     }

@@ -10,7 +10,7 @@ namespace Briver.Logging
     public enum LogLevel
     {
         /// <summary>
-        /// 跟踪
+        /// 全部
         /// </summary>
         Trace = 0,
 
@@ -20,7 +20,7 @@ namespace Briver.Logging
         Debug = 1,
 
         /// <summary>
-        /// 普通
+        /// 消息
         /// </summary>
         Info = 2,
 
