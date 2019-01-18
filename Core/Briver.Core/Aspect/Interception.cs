@@ -29,19 +29,19 @@ namespace Briver.Aspect
     /// <summary>
     /// 支持组合的切面拦截器
     /// </summary>
-    internal interface IComposableInterception : IComposition
+    internal interface IComposableInterception : IComposition, IInterception
     {
     }
 
     /// <summary>
     /// 切面拦截器基类
     /// </summary>
-    public abstract class Interception : IInterception, IComposableInterception
+    public abstract class Interception : IComposableInterception
     {
-        int IInterception.Priority
-        {
-            get { return this.GetCompositionMetadata().Priority; }
-        }
+        /// <summary>
+        /// 优先级
+        /// </summary>
+        public virtual int Priority => this.GetCompositionMetadata().Priority;
 
         /// <summary>
         /// 拦截处理
