@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -24,19 +25,12 @@ namespace Briver
             {
                 var app = new App();
                 SystemContext.Initialize(app);
-                try
-                {
-                    Console.WriteLine($"{app.Name} {app.Version}");
-                    for (int i = 0; i < 5; i++)
-                    {
-                        app.Aspect().Execute(args);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("发生了异常", ex.ToString());
-                    throw;
-                }
+                Console.WriteLine($"{app.Name} {app.Version}");
+
+                RunCommand(args);
+            }
+            catch (OperationCanceledException)
+            {
             }
             catch (Exception ex)
             {
@@ -44,7 +38,47 @@ namespace Briver
             }
 
         }
+
+        private static void RunCommand(string[] args)
+        {
+            try
+            {
+                while (true)
+                {
+                    if (args == null || args.Length == 0)
+                    {
+                        Console.WriteLine("请输入命令:");
+                        var line = Console.ReadLine();
+                        if (line == null) //用户按了CTRL+C(取消)
+                        {
+                            break;
+                        }
+                        args = line.ParseCommandLineArguments();
+                        if (args.Length == 0)
+                        {
+                            continue;
+                        }
+                    }
+
+                    var cli = new CommandLineApplication();
+                    foreach (var cmd in SystemContext.GetExports<ICommand>().Where(it => it.Parent == null))
+                    {
+                        cli.Command(cmd.Name, cmd.Execute);
+                    }
+
+                    cli.Execute(args);
+                    args = null;//清理参数
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("发生了异常", ex.ToString());
+                throw;
+            }
+
+        }
     }
+
 
 
 }

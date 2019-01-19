@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Briver.Aspect;
 using Briver.Commands;
 using Briver.Framework;
@@ -40,34 +42,6 @@ namespace Briver
             return info;
         }
 
-        internal void Execute(string[] args)
-        {
-            if (args == null || args.Length == 0)
-            {
-                Console.WriteLine("请输入命令:");
-                var line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    return;
-                }
-
-                args = line.ParseCommandLineArguments();
-            }
-
-            var cli = new CommandLineApplication();
-            foreach (var cmd in SystemContext.GetExports<ICommand>().Where(it => it.Parent == null))
-            {
-                cli.Command(cmd.Name, cmd.Execute);
-            }
-
-            if (args.Length == 0)
-            {
-                cli.ShowHelp();
-                return;
-            }
-
-            cli.Execute(args);
-        }
 
     }
 

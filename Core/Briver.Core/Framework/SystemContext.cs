@@ -75,7 +75,7 @@ namespace Briver.Framework
             return new DelegatingCompositionContext(builder.CreateContainer());
         }
 
-        private static void EnsureInitialized()
+        private static void EnsureState()
         {
             lock (@lock)
             {
@@ -94,7 +94,7 @@ namespace Briver.Framework
         {
             get
             {
-                EnsureInitialized();
+                EnsureState();
                 return _configuration;
             }
         }
@@ -106,7 +106,7 @@ namespace Briver.Framework
         {
             get
             {
-                EnsureInitialized();
+                EnsureState();
                 return _application;
             }
         }
@@ -119,7 +119,7 @@ namespace Briver.Framework
         /// <returns></returns>
         public static IEnumerable<T> GetExports<T>() where T : IComposition
         {
-            EnsureInitialized();
+            EnsureState();
             return _composition.GetExports<T>();
         }
 
@@ -140,7 +140,11 @@ namespace Briver.Framework
         /// <param name="target">目标对象</param>
         public static void SatisfyImports(object target)
         {
-            EnsureInitialized();
+            EnsureState();
+            if (target == null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
             _composition.SatisfyImports(target);
         }
     }
