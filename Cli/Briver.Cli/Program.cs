@@ -47,7 +47,8 @@ namespace Briver
                 {
                     if (args == null || args.Length == 0)
                     {
-                        Console.WriteLine("请输入命令:");
+                        Console.WriteLine();
+                        Console.WriteLine("{0}请输入命令{0}{0}", new string('-', 6));
                         var line = Console.ReadLine();
                         if (line == null) //用户按了CTRL+C(取消)
                         {
@@ -61,13 +62,24 @@ namespace Briver
                     }
 
                     var cli = new CommandLineApplication();
-                    foreach (var cmd in SystemContext.GetExports<ICommand>().Where(it => it.Parent == null))
+                    try
                     {
-                        cli.Command(cmd.Name, cmd.Execute);
-                    }
+                        foreach (var cmd in SystemContext.GetExports<ICommand>().Where(it => it.Parent == null))
+                        {
+                            cli.Command(cmd.Name, cmd.Execute);
+                        }
 
-                    cli.Execute(args);
-                    args = null;//清理参数
+                        cli.Execute(args);
+                    }
+                    catch (CommandParsingException)
+                    {
+                        Console.WriteLine("错误：输入命令的命令无效");
+                        cli.ShowHelp();
+                    }
+                    finally
+                    {
+                        args = null;//清理参数
+                    }
                 }
             }
             catch (Exception ex)
