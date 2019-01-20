@@ -38,15 +38,14 @@ namespace Briver.ProjectTasks
                     File.WriteAllLines(output, new[] { readme, information });
                 }
 
-                this.Log.LogMessage($"已重新生成“{output}”文件");
-                return true;
+                this.Log.LogMessage($"已重新生成“{output}”文件", MessageImportance.High);
             }
             catch (Exception ex)
             {
                 this.Log.LogErrorFromException(ex);
-                return false;
             }
 
+            return true;
         }
 
         private string BuildInformation(string project)
