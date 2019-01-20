@@ -21,12 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\tasks\" />
-    <None Include="Assets\**" Pack="True" PackagePath="\" />
+    <Folder Include="Properties\Package\tasks\" />
+    <None Include="Properties\Package\**" Pack="True" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Assets\content\Properties\InformationVersion.cs" />
+    <Compile Remove="Properties\Package\content\Properties\InformationVersion.cs" />
   </ItemGroup>
 
   <ItemGroup>
