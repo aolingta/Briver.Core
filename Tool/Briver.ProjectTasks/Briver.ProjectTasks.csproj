@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Properties\Package\content\InformationVersion.cs" />
     <Compile Remove="Properties\Package\content\Properties\InformationVersion.cs" />
   </ItemGroup>
 
