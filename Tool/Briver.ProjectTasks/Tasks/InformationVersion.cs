@@ -9,7 +9,7 @@ using Microsoft.Build.Utilities;
 
 namespace Briver.ProjectTasks
 {
-    public class InformationVersionTask : Task
+    public class InformationVersion : Task
     {
         private const string FileName = "InformationVersion.cs";
 
@@ -18,6 +18,26 @@ namespace Briver.ProjectTasks
         /// </summary>
         public string ProjectDir { get; set; }
 
+        /// <summary>
+        /// 项目名称
+        /// </summary>
+        public string ProjectName { get; set; }
+
+        /// <summary>
+        /// 程序集名
+        /// </summary>
+        public string AssemblyName { get; set; }
+
+        /// <summary>
+        /// 输出消息
+        /// </summary>
+        [Output]
+        public string OutputMessage { get; set; }
+
+        /// <summary>
+        /// 执行任务
+        /// </summary>
+        /// <returns></returns>
         public override bool Execute()
         {
             try
@@ -30,24 +50,28 @@ namespace Briver.ProjectTasks
 
                 var assembly = Assembly.GetExecutingAssembly();
                 var resource = $"{this.GetType().Namespace}.ReadMe.txt";
-                var output = Path.Combine(propertiesDir, FileName);
+                var outputFile = Path.Combine(propertiesDir, FileName);
                 using (var stream = assembly.GetManifestResourceStream(resource))
                 using (var reader = new StreamReader(stream))
                 {
                     var readme = reader.ReadToEnd();
-                    File.WriteAllLines(output, new[] { readme, information });
+                    File.WriteAllLines(outputFile, new[] { readme, information });
                 }
-
-                this.Log.LogMessage($"已重新生成“{output}”文件", MessageImportance.High);
+                this.OutputMessage = $"{ProjectName}: 已重新生成“{outputFile}”文件";
             }
             catch (Exception ex)
             {
-                this.Log.LogErrorFromException(ex);
+                this.Log.LogWarningFromException(ex);
             }
 
             return true;
         }
 
+        /// <summary>
+        /// 生成InformationVersion的内容
+        /// </summary>
+        /// <param name="project">项目文件夹</param>
+        /// <returns></returns>
         private string BuildInformation(string project)
         {
             var repository = project;

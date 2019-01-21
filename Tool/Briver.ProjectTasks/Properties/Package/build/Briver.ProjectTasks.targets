@@ -14,11 +14,19 @@
     <TasksLibraryFolder>$(MSBuildThisFileDirectory)..\tasks\netstandard2.0</TasksLibraryFolder>
   </PropertyGroup>
 
-  <UsingTask TaskName="Briver.ProjectTasks.InformationVersionTask" AssemblyFile="$(TasksLibraryFolder)\Briver.ProjectTasks.dll" />
+  <UsingTask TaskName="Briver.ProjectTasks.InformationVersion" AssemblyFile="$(TasksLibraryFolder)\Briver.ProjectTasks.dll" />
 
   <Target Name="Briver" AfterTargets="PrepareForBuild;">
 
-    <InformationVersionTask ProjectDir="$(ProjectDir)" />
+    <PropertyGroup>
+      <TaskOutputMessage></TaskOutputMessage>
+    </PropertyGroup>
+
+    <InformationVersion ProjectDir="$(ProjectDir)" ProjectName="$(MSBuildProjectName)" AssemblyName="$(AssemblyName)">
+      <Output TaskParameter="OutputMessage" PropertyName="TaskOutputMessage" />
+    </InformationVersion>
+    
+    <Message Text="$(TaskOutputMessage)" Importance="high" Condition="'$(TaskOutputMessage)' != ''"/>
 
   </Target>
 

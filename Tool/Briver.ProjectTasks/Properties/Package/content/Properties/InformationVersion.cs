@@ -5,4 +5,4 @@
  *     
  * ***************************************/
 
-[assembly: System.Reflection.AssemblyInformationalVersion("产品版本")]
+[assembly: System.Reflection.AssemblyInformationalVersion("")]
