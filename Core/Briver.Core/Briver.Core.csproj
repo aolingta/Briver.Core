@@ -14,7 +14,6 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <Company>Briver</Company>
     <FileVersion>1.2.0</FileVersion>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -33,5 +32,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="System.Composition" Version="1.2.0" />
   </ItemGroup>
+
+  <Target Name="CopyNupkg" AfterTargets="Pack">
+    <Message Text="xcopy $(ProjectDir)$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg $(ProjectDir)..\..\..\" Importance="high"/>
+    <Exec Command="xcopy $(ProjectDir)$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg $(ProjectDir)..\..\..\ /I /Y /Q" />
+  </Target>
 
 </Project>

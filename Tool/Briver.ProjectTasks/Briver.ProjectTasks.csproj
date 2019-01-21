@@ -12,7 +12,7 @@
     <Description>将编译时的GIT版本信息写入程序集文件</Description>
     <Authors>陈勇江</Authors>
     <Company>Briver</Company>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Properties\Package\content\InformationVersion.cs" />
     <Compile Remove="Properties\Package\content\Properties\InformationVersion.cs" />
   </ItemGroup>
 
@@ -34,4 +33,9 @@
     <EmbeddedResource Include="ReadMe.txt" />
   </ItemGroup>
 
+  <Target Name="CopyNupkg" AfterTargets="Pack">
+    <Message Text="xcopy $(ProjectDir)$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg $(ProjectDir)..\..\..\" Importance="high"/>
+    <Exec Command="xcopy $(ProjectDir)$(PackageOutputPath)$(PackageId).$(PackageVersion).nupkg $(ProjectDir)..\..\..\ /I /Y /Q" />
+  </Target>
+  
 </Project>
