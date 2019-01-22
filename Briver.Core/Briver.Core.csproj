@@ -3,17 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Briver</RootNamespace>
+    <PackageId>Briver</PackageId>
+    <Version>1.2.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <Authors>陈勇江</Authors>
     <Product>Briver.Core</Product>
     <Copyright>Copyright © Chenyj 2018</Copyright>
     <Description>面向.NetStandard的应用框架</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.0</Version>
-    <PackageId>Briver</PackageId>
-    <PackageProjectUrl>https://github.com/chenyj796/Briver.NetCore</PackageProjectUrl>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <PackageProjectUrl>https://github.com/chenyj796/Briver.Core</PackageProjectUrl>
     <Company>Briver</Company>
-    <FileVersion>1.2.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup>
