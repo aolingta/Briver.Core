@@ -3,21 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Core", "Core\Briver.Core\Briver.Core.csproj", "{83C8A181-092F-4FF4-BF3E-D298C1459681}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Core", "Briver.Core\Briver.Core.csproj", "{83C8A181-092F-4FF4-BF3E-D298C1459681}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Core", "1.Core", "{6F6617F5-AB01-4562-B651-E86C4246301D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Cli", "2.Cli", "{75E3C5B8-F329-40D8-98A1-14EDDE729ABD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Svc", "4.Svc", "{D79D4202-49E2-4AE4-9D90-CE4D2A902EBD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Service", "Svc\Briver.Service\Briver.Service.csproj", "{D55BA854-BF5F-4924-9A97-DF373685C547}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9.Tool", "9.Tool", "{C7169B2E-6FD6-4D66-9131-8460D585CF58}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.ProjectTasks", "Tool\Briver.ProjectTasks\Briver.ProjectTasks.csproj", "{DF975184-EBEE-440E-A5E2-84ECEA22072F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Cli", "Cli\Briver.Cli\Briver.Cli.csproj", "{001B548C-4A69-4711-84C5-70AFD5B440C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Briver.Cli", "Briver.Cli\Briver.Cli.csproj", "{001B548C-4A69-4711-84C5-70AFD5B440C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

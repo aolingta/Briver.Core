@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Briver": {
-      "commandName": "Executable",
-      "executablePath": "D:\\GIT\\Briver.NetCore\\Briver\\bin\\Debug\\netstandard2.0\\Briver.cmd",
-      "workingDirectory": "D:\\GIT\\Briver.NetCore\\Briver\\bin\\Debug\\netstandard2.0\\"
-    }
-  }
-}

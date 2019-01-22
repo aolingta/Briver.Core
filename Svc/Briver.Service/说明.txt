@@ -1,7 +1,0 @@
-﻿此项目用于生成一个Windows服务，运行操作系统启动时的任务。
-1.服务安装：
-sc create Briver.Service binPath= "dotnet C:\Briver\Briver.Service\Briver.Service.dll" DisplayName= "Briver.Service" start= auto
-注：以上的Briver.Service.dll对应的地址，需要根据实际情况修改
-
-2.配置服务
-位于Config目录下的Briver.Service.json，定义了系统启动时的任务列表
