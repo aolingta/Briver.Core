@@ -230,7 +230,7 @@ public abstract class Application
 
 此类表示应用程序的上下文环境，包含以下几个内容：
 
-###### 1)初始化方法
+###### 1) 初始化方法
 
 void Initialize(Application application)，接收一个继承自Application类的自定义类，执行整个框架的初始化，一般在Main方法开始的位置调用此方法
 
@@ -474,3 +474,65 @@ public class Publisher
 ```
 
 注意：EventBus已经处理了线程间同步的问题，因此可以直接在工作线程上发布事件。如果订阅者是控件的话，一般在它的构造函数里订阅事件。
+
+
+
+### 附: 开发说明
+
+为了能够顺利使用本框架，以下步骤是必须的：
+
+##### 1. 实现Application抽象类
+
+该类位于Briver.Framework命名空间下，定义了系统启动必须的一些信息，具体请参见：3.1.1 Application抽象类
+
+以下是一个示例：
+
+```csharp
+internal class App : Application
+{
+    private const string RootConfig = "Briver.json";
+
+    /// <summary>
+    /// 通过读取文件加载信息
+    /// </summary>
+    /// <returns></returns>
+    protected override Information LoadInformation()
+    {
+        string BuildErrorText()
+        {
+            return $"运行目录“{this.BaseDirectory}”下不存在文件“{RootConfig}”或者此文件不是有效的json格式，请确保此文件存在并且使用{Encoding.UTF8.EncodingName}编码。";
+        }
+        var path = Path.Combine(this.BaseDirectory, RootConfig);
+        if (!File.Exists(path))
+        {
+            throw new FrameworkException(ExceptionLevel.Fatal, BuildErrorText());
+        }
+        var json = File.ReadAllText(path, Encoding.UTF8);
+        var info = JsonConvert.DeserializeObject<Information>(json);
+        if (info == null)
+        {
+            throw new FrameworkException(ExceptionLevel.Fatal, BuildErrorText());
+        }
+        return info;
+    }
+}
+```
+
+##### 2. 初始化SystemContext类
+
+在应用程序的入口位置，调用SystemContext静态类的初始化方法，完成系统加载。
+
+```csharp
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        var app = new App();
+        SystemContext.Initialize(app);
+        
+        ......
+```
+
+至此，系统已经准备就绪，可以尽情使用了。
+
+
