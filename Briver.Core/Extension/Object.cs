@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Briver.Framework;
 
-namespace System
+namespace Briver.Extension
 {
-    public static partial class ExtensionMethods
+    public static partial class ObjectMethods
     {
         /// <summary>
         /// 判断当前对象是否指定的类型

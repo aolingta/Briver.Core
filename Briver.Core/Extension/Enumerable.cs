@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 
-namespace System.Linq
+namespace Briver.Extension
 {
-    public static partial class ExtensionMethods
+    public static partial class EnumerableMethods
     {
         /// <summary>
         /// 对集合中的每个元素执行指定的方法

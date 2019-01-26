@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace System
+namespace Briver.Extensions
 {
-    public static partial class ExtensionMethods
+    public static partial class StringMethods
     {
         /// <summary>
         /// 是否空字符串
