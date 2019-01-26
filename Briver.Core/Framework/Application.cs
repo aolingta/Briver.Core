@@ -145,10 +145,11 @@ namespace Briver.Framework
         }
 
         /// <summary>
-        /// 加载系统要用到的程序集
+        /// 加载指定目录下的程序集
         /// </summary>
-        /// <returns></returns>
-        protected internal virtual IEnumerable<Assembly> LoadAssemblies()
+        /// <param name="directories">目录列表</param>
+        /// <returns>返回当前应用程序域中所有已加载的程序集</returns>
+        public static IDictionary<string, Assembly> LoadAssemblies(IEnumerable<string> directories)
         {
             var assemblies = new Dictionary<string, Assembly>();
 
@@ -161,23 +162,41 @@ namespace Briver.Framework
                 }
             }
 
-            foreach (var file in Directory.EnumerateFiles(this.BaseDirectory, "*.dll"))
+            foreach (var path in directories ?? Enumerable.Empty<string>())
             {
-                var name = Path.GetFileNameWithoutExtension(file).ToLower();
-                if (!assemblies.ContainsKey(name))
+                if (!Directory.Exists(path))
                 {
-                    try
+                    continue;
+                }
+
+                foreach (var file in Directory.EnumerateFiles(path, "*.dll"))
+                {
+                    var name = Path.GetFileNameWithoutExtension(file).ToLower();
+                    if (!assemblies.ContainsKey(name))
                     {
-                        assemblies.Add(name, Assembly.Load(AssemblyName.GetAssemblyName(file)));
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"加载程序集{name}失败：{ex.Message}");
+                        try
+                        {
+                            assemblies.Add(name, Assembly.Load(AssemblyName.GetAssemblyName(file)));
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"加载程序集{name}失败：{ex.Message}");
+                        }
                     }
                 }
             }
 
-            return assemblies.Values;
+            return assemblies;
+        }
+
+
+        /// <summary>
+        /// 加载系统要用到的程序集
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual IEnumerable<Assembly> LoadAssemblies()
+        {
+            return LoadAssemblies(new string[] { this.BaseDirectory }).Values;
         }
 
         public override string ToString()
