@@ -173,11 +173,11 @@ namespace Briver.Framework
                     {
                         try
                         {
-                            assemblies.Add(name, Assembly.Load(AssemblyName.GetAssemblyName(file)));
+                            assemblies.Add(name, Assembly.LoadFrom(file));
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
-                            Debug.WriteLine($"加载程序集{name}失败：{ex.Message}");
+                            //Debug.WriteLine($"加载程序集{name}失败：{ex.Message}");
                         }
                     }
                 }
