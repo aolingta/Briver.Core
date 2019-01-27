@@ -124,12 +124,11 @@ namespace Briver.Framework
         {
             void LoadConfig(string dir)
             {
-                if (Directory.Exists(dir))
+                if (!Directory.Exists(dir)) { return; }
+
+                foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
                 {
-                    foreach (var file in Directory.EnumerateFiles(dir, "*.json"))
-                    {
-                        config.AddJsonFile(file, false, true);
-                    }
+                    config.AddJsonFile(file, false, true);
                 }
             }
 
