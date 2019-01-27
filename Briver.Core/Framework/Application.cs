@@ -164,10 +164,7 @@ namespace Briver.Framework
 
             foreach (var path in directories ?? Enumerable.Empty<string>())
             {
-                if (!Directory.Exists(path))
-                {
-                    continue;
-                }
+                if (!Directory.Exists(path)) { continue; }
 
                 foreach (var file in Directory.EnumerateFiles(path, "*.dll"))
                 {

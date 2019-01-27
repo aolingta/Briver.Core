@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Briver</RootNamespace>
     <PackageId>Briver</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <Authors>陈勇江</Authors>
     <Product>Briver.Core</Product>
