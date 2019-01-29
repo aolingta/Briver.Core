@@ -54,7 +54,7 @@ namespace Briver
                         {
                             break;
                         }
-                        args = line.ParseCommandLineArguments();
+                        args = line.ParseCommandArgs();
                         if (args.Length == 0)
                         {
                             continue;

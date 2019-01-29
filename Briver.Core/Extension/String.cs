@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Briver.Extensions
+namespace Briver.Extension
 {
     public static partial class StringMethods
     {

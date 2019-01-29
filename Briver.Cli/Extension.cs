@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Briver
 {
-    internal static partial class Extension
+    internal static partial class ExtensionMethods
     {
         private enum States
         {
