@@ -8,7 +8,8 @@ Briver.Core是一个应用程序基础框架，为应用程序开发中常见的
 
 - 可插拨，组件放到指定的目录即表示启用相应的功能，无须额外操作
 
-此框架基于.NET Standard 2.0开发，已经发布为NuGet包，包名为Briver。
+此框架基于.NET Standard 2.0开发，已经发布为NuGet包，包名为Briver，以下是它的地址：
+https://www.nuget.org/packages/Briver/
 
 ## 功能介绍
 
